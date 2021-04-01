@@ -1,0 +1,37 @@
+<div class="card mx-auto">
+  <div class="card-body">
+    <h2 class="card-title text-center">Sign In</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="loginInput">Login</label>
+        <input
+          [formControl]="loginControl"
+          [class.is-invalid]="isInvalidAndTouched(loginControl)"
+          (input)="serverValidationError = ''"
+          type="text"
+          class="form-control"
+          id="loginInput"
+          placeholder="Enter login"
+        />
+        <div class="invalid-feedback">Login should not be empty</div>
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input
+          [formControl]="passwordControl"
+          [class.is-invalid]="isInvalidAndTouched(passwordControl)"
+          (input)="serverValidationError = ''"
+          type="password"
+          class="form-control"
+          id="passwordInput"
+          placeholder="Password"
+        />
+        <div class="invalid-feedback">Password should not be empty</div>
+        <div class="text-danger">{{ serverValidationError }}</div>
+      </div>
+      <button [disabled]="form.disabled" type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
