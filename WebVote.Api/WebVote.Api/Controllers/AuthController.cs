@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.Exceptions;
 using WebVote.Business.ViewModels;
+using WebVote.Constants;
 
 namespace WebVote.Api.Controllers
 {
@@ -19,6 +21,7 @@ namespace WebVote.Api.Controllers
     }
 
     [HttpPost("register")]
+    [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
     public IActionResult Register([FromBody] RegisterViewModel registerViewModel)
     {
       try

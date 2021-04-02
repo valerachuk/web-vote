@@ -7,7 +7,9 @@ import { CoreModule } from './core/core.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '../environments/environment';
 import { LOCAL_STORAGE_JWT_KEY } from './constants/misc.constant';
-import { SharedModule } from './shared/shared.module';
+import { UserManagementService } from './user-management/services/user-management.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 
 const jwtModule = JwtModule.forRoot({
   config: {
@@ -17,8 +19,16 @@ const jwtModule = JwtModule.forRoot({
 });
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, CoreModule, jwtModule, SharedModule],
+  declarations: [AppComponent, ToastContainerComponent],
+  providers: [UserManagementService],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    CoreModule,
+    jwtModule,
+    HttpClientModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
+import { FormHelperService } from '../core/services/form-helper.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { AuthService } from '../core/services/auth.service';
 })
 export class LoginComponent {
   constructor(
+    public readonly formHelper: FormHelperService,
     private readonly auth: AuthService,
     private readonly router: Router
   ) {}
@@ -47,9 +49,5 @@ export class LoginComponent {
         }
       }
     );
-  }
-
-  public isInvalidAndTouched(control: FormControl): boolean {
-    return control.invalid && control.touched;
   }
 }

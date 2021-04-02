@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  allowedJwtDomain: 'https://localhost:5001',
+  allowedJwtDomain: 'localhost:5001',
   baseApiUrl: 'https://localhost:5001/api/',
 };
 

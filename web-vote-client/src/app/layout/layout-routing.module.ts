@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserRole } from '../constants/userRoles.enum';
+import { AUTHORIZE_ROLES } from '../constants/authorize-roles.constant';
 import { AuthGuardService } from '../core/services/auth-guard.service';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { LoginLayoutComponent } from './components/login-layout/login-layout.component';
+import { ManagerLayoutComponent } from './components/manager-layout/manager-layout.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { VoterLayoutComponent } from './components/voter-layout/voter-layout.component';
 
@@ -17,7 +18,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginLayoutComponent,
     data: {
-      allowedRole: UserRole.Unauthorized,
+      allowedRoles: AUTHORIZE_ROLES.unauthorized,
     },
     canActivate: [AuthGuardService],
     children: [
@@ -32,17 +33,43 @@ const routes: Routes = [
     path: 'voter',
     component: VoterLayoutComponent,
     data: {
-      allowedRole: UserRole.Voter,
+      allowedRoles: AUTHORIZE_ROLES.voter,
     },
     canActivate: [AuthGuardService],
+  },
+  {
+    path: 'manager',
+    component: ManagerLayoutComponent,
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.manager,
+    },
+    canActivate: [AuthGuardService],
+    children: [
+      {
+        path: 'user-management',
+        loadChildren: () =>
+          import('../user-management/user-management.module').then(
+            (m) => m.UserManagementModule
+          ),
+      },
+    ],
   },
   {
     path: 'admin',
     component: AdminLayoutComponent,
     data: {
-      allowedRole: UserRole.Admin,
+      allowedRoles: AUTHORIZE_ROLES.admin,
     },
     canActivate: [AuthGuardService],
+    children: [
+      {
+        path: 'user-management',
+        loadChildren: () =>
+          import('../user-management/user-management.module').then(
+            (m) => m.UserManagementModule
+          ),
+      },
+    ],
   },
   {
     path: '**',

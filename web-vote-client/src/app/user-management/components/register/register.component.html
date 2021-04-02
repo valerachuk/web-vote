@@ -1,0 +1,86 @@
+<div class="card mx-auto mt-5">
+  <div class="card-body">
+    <h2 class="card-title text-center">Register voter</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="fullNameInput">Full name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullNameInput"
+          placeholder="Enter full name"
+          [formControl]="fullNameControl"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(fullNameControl)"
+        />
+        <div class="invalid-feedback">Full name should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="birthInput">Birth</label>
+        <input
+          type="text"
+          class="form-control"
+          id="birthInput"
+          readonly
+          placeholder="Click to open calendar"
+          ngbDatepicker
+          #dp="ngbDatepicker"
+          (click)="dp.toggle()"
+          [minDate]="minDate"
+          [maxDate]="ngbCalendar.getToday()"
+          [formControl]="birthControl"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(birthControl)"
+        />
+        <div class="invalid-feedback">Birth should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="itnInput">ITN</label>
+        <input
+          type="text"
+          class="form-control"
+          id="itnInput"
+          placeholder="Enter individual tax number"
+          [formControl]="individualTaxNumberControl"
+          [class.is-invalid]="
+            formHelper.isInvalidAndTouched(individualTaxNumberControl)
+          "
+          (input)="serverValidationError = ''"
+        />
+        <div class="invalid-feedback">ITN should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="loginInput">Login</label>
+        <input
+          type="text"
+          class="form-control"
+          id="loginInput"
+          placeholder="Enter login"
+          [formControl]="loginControl"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(loginControl)"
+          (input)="serverValidationError = ''"
+        />
+        <div class="invalid-feedback">Login should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="passwordInput"
+          placeholder="Password"
+          [formControl]="passwordControl"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(passwordControl)"
+        />
+        <div class="invalid-feedback">Password should not be empty</div>
+        <div class="text-danger">{{ serverValidationError }}</div>
+      </div>
+
+      <button type="submit" [disabled]="form.disabled" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

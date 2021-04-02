@@ -6,7 +6,7 @@
         <label for="loginInput">Login</label>
         <input
           [formControl]="loginControl"
-          [class.is-invalid]="isInvalidAndTouched(loginControl)"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(loginControl)"
           (input)="serverValidationError = ''"
           type="text"
           class="form-control"
@@ -19,7 +19,7 @@
         <label for="passwordInput">Password</label>
         <input
           [formControl]="passwordControl"
-          [class.is-invalid]="isInvalidAndTouched(passwordControl)"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(passwordControl)"
           (input)="serverValidationError = ''"
           type="password"
           class="form-control"

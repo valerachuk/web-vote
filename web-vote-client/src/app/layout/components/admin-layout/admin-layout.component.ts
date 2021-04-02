@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class AdminLayoutComponent implements OnInit {
   constructor() {}
 
-  public isMenuCollapsed = false;
+  public isMenuCollapsed = true;
 
   ngOnInit(): void {}
 }

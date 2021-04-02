@@ -1,0 +1,3 @@
+:host #birthInput:not(:disabled) {
+  cursor: pointer;
+}

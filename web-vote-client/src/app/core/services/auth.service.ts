@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JWTResponse } from 'src/app/interfaces/jwtResponse.interface';
-import { SignInForm } from '../../interfaces/signInForm.interface';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LOCAL_STORAGE_JWT_KEY } from '../../constants/misc.constant';
-import { UserRole } from 'src/app/constants/userRoles.enum';
+import { UserRole } from 'src/app/constants/user-roles.enum';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
-import { ROLE_ROUTE_MAP } from 'src/app/constants/roleRouteMap.constant';
+import { ROLE_ROUTE_MAP } from 'src/app/constants/role-route-map.constant';
+import { JWTResponse } from '../interfaces/jwt-response.interface';
+import { SignInForm } from '../interfaces/sign-in-form.interface';
 
 @Injectable()
 export class AuthService {
