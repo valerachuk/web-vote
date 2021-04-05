@@ -6,17 +6,10 @@ import { CreateEditPollComponent } from './components/create-edit-poll/create-ed
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { PollService } from './services/poll.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [CreateEditPollComponent],
-  imports: [
-    CommonModule,
-    PollRoutingModule,
-    ReactiveFormsModule,
-    SharedModule,
-    HttpClientModule,
-  ],
+  imports: [CommonModule, PollRoutingModule, ReactiveFormsModule, SharedModule],
   providers: [PollService],
 })
 export class PollModule {}

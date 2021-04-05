@@ -78,6 +78,7 @@ export class CreateEditPollComponent implements OnInit {
         `Poll "${(this.form.value as Poll).title}" successfuly created`
       );
       this.form.reset();
+      this.optionsArray.clear();
       this.addOption();
       this.form.enable();
     });
