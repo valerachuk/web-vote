@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable()
 export class FormHelperService {
-  public isInvalidAndTouched(control: FormControl): boolean {
+  public isInvalidAndTouched(control: AbstractControl): boolean {
     return control.invalid && control.touched;
   }
 }

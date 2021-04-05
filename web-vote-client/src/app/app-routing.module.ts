@@ -7,7 +7,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./layout/layout.module').then((m) => m.LayoutModule),
   },
-  { path: 'user-management', loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule) },
 ];
 
 @NgModule({

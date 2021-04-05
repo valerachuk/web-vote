@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AUTHORIZE_ROLES } from '../constants/authorize-roles.constant';
+import { AuthGuardService } from '../core/services/auth-guard.service';
+import { CreateEditPollComponent } from './components/create-edit-poll/create-edit-poll.component';
+
+const routes: Routes = [
+  {
+    path: 'create',
+    component: CreateEditPollComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.admin,
+    },
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class PollRoutingModule {}

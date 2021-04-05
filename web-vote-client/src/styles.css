@@ -6,3 +6,12 @@ body {
   margin: 0;
   height: 100vh;
 }
+
+.layout-container {
+  padding-bottom: 50px;
+  padding-top: 30px;
+}
+
+.min-h-100 {
+  min-height: 100%;
+}

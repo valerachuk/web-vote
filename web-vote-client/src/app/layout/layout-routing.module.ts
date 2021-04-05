@@ -69,6 +69,11 @@ const routes: Routes = [
             (m) => m.UserManagementModule
           ),
       },
+      {
+        path: 'poll',
+        loadChildren: () =>
+          import('../poll/poll.module').then((m) => m.PollModule),
+      },
     ],
   },
   {

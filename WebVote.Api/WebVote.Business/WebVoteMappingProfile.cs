@@ -20,6 +20,18 @@ namespace WebVote.Business
         });
 
       CreateMap<Person, PersonInfoViewModel>();
+
+      CreateMap<PollOptionViewModel, PollOption>();
+      CreateMap<PollViewModel, Poll>()
+        .AfterMap((model, poll) =>
+        {
+          var i = 0;
+          foreach (var pollOption in poll.Options)
+          {
+            pollOption.Order = i;
+            i++;
+          }
+        });
     }
   }
 }

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { FormHelperService } from '../core/services/form-helper.service';
 
@@ -12,8 +11,7 @@ import { FormHelperService } from '../core/services/form-helper.service';
 export class LoginComponent {
   constructor(
     public readonly formHelper: FormHelperService,
-    private readonly auth: AuthService,
-    private readonly router: Router
+    private readonly auth: AuthService
   ) {}
 
   public serverValidationError = '';

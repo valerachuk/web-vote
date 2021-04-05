@@ -1,0 +1,114 @@
+<div class="card mx-auto min-h-100">
+  <div class="card-body">
+    <h2 class="card-title text-center">Create poll</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="poolTitleInput">Poll title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="poolTitleInput"
+          placeholder="Enter poll title"
+          [formControl]="titleControl"
+          [class.is-invalid]="formHelper.isInvalidAndTouched(titleControl)"
+        />
+        <div class="invalid-feedback">Poll title should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="poolDescriptionInput">Poll description</label>
+        <textarea
+          type="text"
+          class="form-control"
+          id="poolDescriptionInput"
+          placeholder="Enter poll description"
+          [formControl]="descriptionControl"
+          [class.is-invalid]="
+            formHelper.isInvalidAndTouched(descriptionControl)
+          "
+        ></textarea>
+        <div class="invalid-feedback">Poll description should not be empty</div>
+      </div>
+      <hr />
+
+      <h5 class="mb-3">Options:</h5>
+
+      <div
+        class="form-group"
+        *ngFor="let group of optionsArray.controls; index as idx"
+      >
+        <div class="card shadow-sm">
+          <div class="card-header py-3"></div>
+          <div class="card-body">
+            <div class="form-group">
+              <label [for]="'poolTitleInput' + idx">Option title</label>
+              <input
+                type="text"
+                class="form-control"
+                [id]="'poolTitleInput' + idx"
+                placeholder="Enter option title"
+                [formControl]="getOptionTitle(group)"
+                [class.is-invalid]="
+                  formHelper.isInvalidAndTouched(getOptionTitle(group))
+                "
+              />
+              <div class="invalid-feedback">
+                Option title should not be empty
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label [for]="'poolDescriptionInput' + idx"
+                >Option description</label
+              >
+              <textarea
+                type="text"
+                class="form-control"
+                [id]="'poolDescriptionInput' + idx"
+                placeholder="Enter option description"
+                [formControl]="getOptionDescription(group)"
+                [class.is-invalid]="
+                  formHelper.isInvalidAndTouched(getOptionDescription(group))
+                "
+              ></textarea>
+              <div class="invalid-feedback">
+                Option description should not be empty
+              </div>
+            </div>
+
+            <button
+              class="btn btn-outline-danger"
+              type="button"
+              (click)="removeOption(idx)"
+              [disabled]="form.disabled"
+            >
+              Delete option
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-danger mb-3" *ngIf="optionsArray.length === 0">
+        At least one option should be specified
+      </div>
+
+      <div class="btn-group">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.disabled"
+        >
+          Submit
+        </button>
+        <button
+          class="btn btn-success"
+          type="button"
+          (click)="addOption()"
+          [disabled]="form.disabled"
+        >
+          Add option
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
