@@ -111,10 +111,6 @@ namespace WebVote.Data
         .IsRequired();
 
       pollOptionModelBuilder
-        .Property(pollOption => pollOption.Order)
-        .IsRequired();
-
-      pollOptionModelBuilder
         .HasOne(x => x.Poll)
         .WithMany(x => x.Options)
         .HasForeignKey(x => x.PollId)

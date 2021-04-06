@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { LOCAL_STORAGE_JWT_KEY } from './constants/misc.constant';
 import { UserManagementService } from './user-management/services/user-management.service';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const jwtModule = JwtModule.forRoot({
   config: {
@@ -20,7 +21,14 @@ const jwtModule = JwtModule.forRoot({
 @NgModule({
   declarations: [AppComponent, ToastContainerComponent],
   providers: [UserManagementService],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, CoreModule, jwtModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    CoreModule,
+    HttpClientModule,
+    jwtModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
