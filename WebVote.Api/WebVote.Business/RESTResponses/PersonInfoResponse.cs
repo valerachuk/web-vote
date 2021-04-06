@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace WebVote.Business.ViewModels
+namespace WebVote.Business.RESTResponses
 {
-  public class PersonInfoViewModel
+  public class PersonInfoResponse
   {
     public string FullName { get; set; }
     public DateTime Birth { get; set; }

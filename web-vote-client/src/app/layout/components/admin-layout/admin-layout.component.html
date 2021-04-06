@@ -13,22 +13,6 @@
 
       <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              [routerLink]="'.'"
-              (click)="isMenuCollapsed = true"
-              >-------------</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              [routerLink]="'.'"
-              (click)="isMenuCollapsed = true"
-              >-------------</a
-            >
-          </li>
           <li class="nav-item" [class.active]="activeRegisterLink.isActive">
             <a
               class="nav-link"
@@ -36,7 +20,7 @@
               (click)="isMenuCollapsed = true"
               routerLinkActive
               #activeRegisterLink="routerLinkActive"
-              >Register</a
+              >Register voter</a
             >
           </li>
           <li class="nav-item" [class.active]="activeCreatePoolLink.isActive">

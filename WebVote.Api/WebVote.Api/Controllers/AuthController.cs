@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.Exceptions;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTRequests;
 using WebVote.Constants;
 
 namespace WebVote.Api.Controllers
@@ -22,11 +22,11 @@ namespace WebVote.Api.Controllers
 
     [HttpPost("register")]
     [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
-    public IActionResult Register([FromBody] RegisterViewModel registerViewModel)
+    public IActionResult RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
       try
       {
-        _authDomain.Register(registerViewModel);
+        _authDomain.Register(registerUserRequest);
       }
       catch (UserAlreadyExistsException userExistsException)
       {
@@ -37,11 +37,11 @@ namespace WebVote.Api.Controllers
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginViewModel loginViewModel)
+    public IActionResult Login([FromBody] LoginRequest loginRequest)
     {
       try
       {
-        var jwt = _authDomain.Login(loginViewModel);
+        var jwt = _authDomain.Login(loginRequest);
         return Ok(new
         {
           AccessToken = jwt

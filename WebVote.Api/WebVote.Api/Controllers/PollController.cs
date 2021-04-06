@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTRequests;
 using WebVote.Constants;
 
 namespace WebVote.Api.Controllers
@@ -21,9 +21,9 @@ namespace WebVote.Api.Controllers
 
     [HttpPost("create")]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
-    public IActionResult CreatePoll([FromBody] PollViewModel pollViewModel)
+    public IActionResult CreatePoll([FromBody] CreatePollRequest createPollRequest)
     {
-      _pollDomain.CreatePool(pollViewModel);
+      _pollDomain.CreatePool(createPollRequest);
       return Ok();
     }
 

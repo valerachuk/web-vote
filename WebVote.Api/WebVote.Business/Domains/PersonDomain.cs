@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTResponses;
 using WebVote.Data.Repositories.Interfaces;
 
 namespace WebVote.Business.Domains
@@ -19,7 +19,7 @@ namespace WebVote.Business.Domains
       _personRepository = personRepository;
     }
 
-    public PersonInfoViewModel GetPersonInfo(int id)
-      => _mapper.Map<PersonInfoViewModel>(_personRepository.GetById(id));
+    public PersonInfoResponse GetPersonInfo(int id)
+      => _mapper.Map<PersonInfoResponse>(_personRepository.GetById(id));
   }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTRequests;
+using WebVote.Business.RESTResponses;
 using WebVote.Constants;
 using WebVote.Data.Entities;
 
@@ -9,7 +10,7 @@ namespace WebVote.Business
   {
     public WebVoteMappingProfile()
     {
-      CreateMap<RegisterViewModel, Person>()
+      CreateMap<RegisterUserRequest, Person>()
         .AfterMap((model, person) =>
         {
           person.Role = UserRoles.VOTER;
@@ -19,10 +20,10 @@ namespace WebVote.Business
           };
         });
 
-      CreateMap<Person, PersonInfoViewModel>();
+      CreateMap<Person, PersonInfoResponse>();
 
-      CreateMap<PollOptionViewModel, PollOption>();
-      CreateMap<PollViewModel, Poll>();
+      CreateMap<PollOptionRequest, PollOption>();
+      CreateMap<CreatePollRequest, Poll>();
     }
   }
 }

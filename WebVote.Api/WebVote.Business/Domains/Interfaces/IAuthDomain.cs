@@ -1,10 +1,10 @@
-﻿using WebVote.Business.ViewModels;
+﻿using WebVote.Business.RESTRequests;
 
 namespace WebVote.Business.Domains.Interfaces
 {
   public interface IAuthDomain
   {
-    void Register(RegisterViewModel registerViewModel);
-    string Login(LoginViewModel loginViewModel);
+    void Register(RegisterUserRequest registerUserRequest);
+    string Login(LoginRequest loginRequest);
   }
 }

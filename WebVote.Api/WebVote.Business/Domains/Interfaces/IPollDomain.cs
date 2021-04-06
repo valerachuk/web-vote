@@ -1,9 +1,9 @@
-﻿using WebVote.Business.ViewModels;
+﻿using WebVote.Business.RESTRequests;
 
 namespace WebVote.Business.Domains.Interfaces
 {
   public interface IPollDomain
   {
-    void CreatePool(PollViewModel pollViewModel);
+    void CreatePool(CreatePollRequest createPollRequest);
   }
 }

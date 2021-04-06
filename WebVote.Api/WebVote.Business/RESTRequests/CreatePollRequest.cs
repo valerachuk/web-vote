@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebVote.Business.ViewModels
+namespace WebVote.Business.RESTRequests
 {
-  public class PollViewModel
+  public class CreatePollRequest
   {
     [Required]
     [MinLength(1)]
@@ -15,6 +15,6 @@ namespace WebVote.Business.ViewModels
 
     [Required]
     [MinLength(1)]
-    public IList<PollOptionViewModel> Options { get; set; }
+    public IList<PollOptionRequest> Options { get; set; }
   }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebVote.Business.ViewModels
+namespace WebVote.Business.RESTRequests
 {
-  public class RegisterViewModel
+  public class RegisterUserRequest
   {
     [Required]
     [MinLength(1)]

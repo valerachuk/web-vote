@@ -1,9 +1,9 @@
-﻿using WebVote.Business.ViewModels;
+﻿using WebVote.Business.RESTResponses;
 
 namespace WebVote.Business.Domains.Interfaces
 {
   public interface IPersonDomain
   {
-    PersonInfoViewModel GetPersonInfo(int id);
+    PersonInfoResponse GetPersonInfo(int id);
   }
 }

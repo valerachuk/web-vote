@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebVote.Business.Common;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.Exceptions;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTRequests;
 using WebVote.Constants;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
@@ -52,10 +52,10 @@ namespace WebVote.Business.Domains
       return _sha256.ComputeHash(salt.Concat(Encoding.UTF8.GetBytes(password)).ToArray());
     }
 
-    public void Register(RegisterViewModel registerViewModel)
+    public void Register(RegisterUserRequest registerUserRequest)
     {
-      var personByItn = _personRepository.GetByITN(registerViewModel.IndividualTaxNumber);
-      var credentialsByLogin = _passwordCredentialsRepository.GetByLogin(registerViewModel.Login);
+      var personByItn = _personRepository.GetByITN(registerUserRequest.IndividualTaxNumber);
+      var credentialsByLogin = _passwordCredentialsRepository.GetByLogin(registerUserRequest.Login);
 
       string errorMessage = null;
 
@@ -78,9 +78,9 @@ namespace WebVote.Business.Domains
       }
 
       var salt = CreateSalt();
-      var passwordHash = ComputePasswordHash(salt, registerViewModel.Password);
+      var passwordHash = ComputePasswordHash(salt, registerUserRequest.Password);
 
-      var newPersonWithCredentials = _mapper.Map<Person>(registerViewModel);
+      var newPersonWithCredentials = _mapper.Map<Person>(registerUserRequest);
       var passwordCredentials = newPersonWithCredentials.PasswordCredentials;
       passwordCredentials.Salt = salt;
       passwordCredentials.PasswordHash = passwordHash;
@@ -88,16 +88,16 @@ namespace WebVote.Business.Domains
       _personRepository.Create(newPersonWithCredentials);
     }
 
-    public string Login(LoginViewModel loginViewModel)
+    public string Login(LoginRequest loginRequest)
     {
-      var passwordCredentials = _passwordCredentialsRepository.GetByLoginWithPersonRole(loginViewModel.Login);
+      var passwordCredentials = _passwordCredentialsRepository.GetByLoginWithPersonRole(loginRequest.Login);
 
       if (passwordCredentials == null)
       {
         throw new ForbiddenException("Invalid login");
       }
 
-      var passwordHashFromLogin = ComputePasswordHash(passwordCredentials.Salt, loginViewModel.Password);
+      var passwordHashFromLogin = ComputePasswordHash(passwordCredentials.Salt, loginRequest.Password);
 
       if (passwordHashFromLogin.SequenceEqual(passwordCredentials.PasswordHash))
       {

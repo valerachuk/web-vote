@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.ViewModels;
+using WebVote.Business.RESTRequests;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
 
@@ -20,9 +20,9 @@ namespace WebVote.Business.Domains
       _pollRepository = pollRepository;
     }
 
-    public void CreatePool(PollViewModel pollViewModel)
+    public void CreatePool(CreatePollRequest createPollRequest)
     {
-      var poll = _mapper.Map<Poll>(pollViewModel);
+      var poll = _mapper.Map<Poll>(createPollRequest);
       _pollRepository.Create(poll);
     }
   }

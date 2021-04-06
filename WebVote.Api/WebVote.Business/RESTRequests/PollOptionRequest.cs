@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebVote.Business.ViewModels
+namespace WebVote.Business.RESTRequests
 {
-  public class PollOptionViewModel
+  public class PollOptionRequest
   {
     [Required]
     [MinLength(1)]
