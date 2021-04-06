@@ -7,9 +7,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { PollService } from './services/poll.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewEditVotePollsListComponent } from './components/view-edit-vote-polls-list/view-edit-vote-polls-list.component';
 
 @NgModule({
-  declarations: [CreateEditPollComponent],
+  declarations: [CreateEditPollComponent, ViewEditVotePollsListComponent],
   imports: [
     CommonModule,
     PollRoutingModule,

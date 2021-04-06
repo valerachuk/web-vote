@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using WebVote.Business.RESTRequests;
+using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses;
+using WebVote.Business.RESTResponses.Poll;
 using WebVote.Constants;
 using WebVote.Data.Entities;
 
@@ -22,8 +24,15 @@ namespace WebVote.Business
 
       CreateMap<Person, PersonInfoResponse>();
 
-      CreateMap<PollOptionRequest, PollOption>();
+      CreateMap<CreatePollOptionRequest, PollOption>();
       CreateMap<CreatePollRequest, Poll>();
+
+      CreateMap<UpdatePollOptionRequest, PollOption>();
+      CreateMap<UpdatePollRequest, Poll>();
+
+      CreateMap<Poll, PollInfoResponse>();
+      CreateMap<Poll, PollWithOptionsResponse>();
+      CreateMap<PollOption, PollOptionResponse>();
     }
   }
 }

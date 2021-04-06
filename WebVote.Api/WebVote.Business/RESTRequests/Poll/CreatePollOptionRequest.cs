@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebVote.Business.RESTRequests
+namespace WebVote.Business.RESTRequests.Poll
 {
-  public class PollOptionRequest
+  public class CreatePollOptionRequest
   {
     [Required]
     [MinLength(1)]

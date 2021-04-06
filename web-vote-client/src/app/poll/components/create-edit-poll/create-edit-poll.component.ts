@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormHelperService } from 'src/app/core/services/form-helper.service';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
 import { Poll } from '../../interfaces/poll.interface';
@@ -17,19 +18,41 @@ import { PollService } from '../../services/poll.service';
   styleUrls: ['./create-edit-poll.component.css'],
 })
 export class CreateEditPollComponent implements OnInit {
+  constructor(
+    public readonly formHelper: FormHelperService,
+    private readonly pollService: PollService,
+    private readonly toastService: GlobalToastService,
+    private readonly route: ActivatedRoute
+  ) {}
+
   public readonly form = new FormGroup({
+    id: new FormControl(null),
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     options: new FormArray([], Validators.required),
   });
 
-  constructor(
-    public readonly formHelper: FormHelperService,
-    private readonly pollService: PollService,
-    private readonly toastService: GlobalToastService
-  ) {}
+  public isEditForm: boolean | null = null;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.isEditForm = this.route.snapshot.data.isEditForm;
+
+    if (this.isEditForm) {
+      this.form.disable();
+      const pollId = +this.route.snapshot.params.id;
+
+      this.pollService.getPollWithOptions(pollId).subscribe((poll) => {
+        poll.options.forEach(() => {
+          this.addOption();
+        });
+        this.form.patchValue(poll);
+
+        this.form.enable();
+      });
+
+      return;
+    }
+
     this.addOption();
   }
 
@@ -56,6 +79,7 @@ export class CreateEditPollComponent implements OnInit {
   public addOption(): void {
     this.optionsArray.push(
       new FormGroup({
+        id: new FormControl(null),
         title: new FormControl('', Validators.required),
         description: new FormControl('', Validators.required),
       })
@@ -73,9 +97,22 @@ export class CreateEditPollComponent implements OnInit {
     }
 
     this.form.disable();
+
+    if (this.isEditForm) {
+      console.log(this.form.value);
+      this.pollService.updatePoll(this.form.value).subscribe(() => {
+        this.toastService.showSuccess(
+          `Poll "${this.titleControl.value}" successfuly edited`
+        );
+        this.form.enable();
+      });
+
+      return;
+    }
+
     this.pollService.createPoll(this.form.value).subscribe(() => {
       this.toastService.showSuccess(
-        `Poll "${(this.form.value as Poll).title}" successfuly created`
+        `Poll "${this.titleControl.value}" successfuly created`
       );
       this.form.reset();
       this.optionsArray.clear();

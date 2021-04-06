@@ -1,6 +1,8 @@
-<div class="card mx-auto min-h-100">
+<div class="card">
   <div class="card-body">
-    <h2 class="card-title text-center">Create poll</h2>
+    <h2 class="card-title text-center">
+      {{ isEditForm ? "Edit poll" : "Create poll" }}
+    </h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="poolTitleInput">Poll title</label>

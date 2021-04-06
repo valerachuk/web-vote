@@ -1,0 +1,24 @@
+<div *ngIf="pollsInfo$ | async as pollsInfo; else loading">
+  <div class="card mb-3" *ngFor="let pollInfo of pollsInfo">
+    <div class="card-body">
+      <h3>{{ pollInfo.id }}) {{ pollInfo.title }}</h3>
+      <p class="card-text">{{ pollInfo.description }}</p>
+      <a
+        class="card-link btn btn-warning"
+        [routerLink]="['..', 'edit', pollInfo.id]"
+        >Edit</a
+      >
+      <!-- <button class="card-link btn btn-primary">Vote</button>
+      <button class="card-link btn btn-success">View</button> -->
+    </div>
+  </div>
+  <h2 class="text-center" *ngIf="pollsInfo.length === 0">No polls here...</h2>
+</div>
+<ng-template #loading
+  ><div class="text-center">
+    <div
+      class="spinner-border"
+      style="width: 5rem; height: 5rem; font-size: 2rem"
+    ></div>
+  </div>
+</ng-template>
