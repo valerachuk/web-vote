@@ -6,4 +6,5 @@ export const AUTHORIZE_ROLES = {
   manager: [UserRole.Manager],
   admin: [UserRole.Admin],
   managerAdmin: [UserRole.Manager, UserRole.Admin],
+  voterManagerAdmin: [UserRole.Voter, UserRole.Manager, UserRole.Admin],
 };

@@ -27,21 +27,30 @@
 <div *ngIf="pollsInfo$ | async as pollsInfo; else loading">
   <div class="card mb-3" *ngFor="let pollInfo of pollsInfo">
     <div class="card-body">
-      <h3>{{ pollInfo.id }}) {{ pollInfo.title }}</h3>
+      <h3>
+        <span *ngIf="pollsViewType === PollsViewType.Edit">
+          {{ pollInfo.id }})
+        </span>
+        {{ pollInfo.title }}
+      </h3>
       <p class="card-text">{{ pollInfo.description }}</p>
-      <a
-        class="card-link btn btn-warning"
-        [routerLink]="['..', 'edit', pollInfo.id]"
-        >Edit</a
-      >
-      <button
-        class="card-link btn btn-danger"
-        (click)="openDeletePollModal(pollInfo, deletePollModal)"
-      >
-        Delete
-      </button>
-      <!-- <button class="card-link btn btn-primary">Vote</button>
-      <button class="card-link btn btn-success">View</button> -->
+      <ng-template [ngIf]="pollsViewType === PollsViewType.Edit">
+        <a
+          class="card-link btn btn-warning"
+          [routerLink]="['..', 'edit', pollInfo.id]"
+          >Edit</a
+        >
+        <button
+          class="card-link btn btn-danger"
+          (click)="openDeletePollModal(pollInfo, deletePollModal)"
+        >
+          Delete
+        </button>
+      </ng-template>
+      <ng-template [ngIf]="pollsViewType === PollsViewType.Vote">
+        <button class="card-link btn btn-primary">Vote</button>
+      </ng-template>
+      <!-- <button class="card-link btn btn-success">View</button> -->
     </div>
   </div>
   <h2 class="text-center" *ngIf="pollsInfo.length === 0">No polls here...</h2>

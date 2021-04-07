@@ -58,12 +58,8 @@ export class AuthService {
       .post<JWTResponse>(`${environment.baseApiUrl}auth/login`, signinForm)
       .pipe(
         tap((jwt) => {
-          this.saveJwtToLocalStorage(jwt);
+          localStorage.setItem(LOCAL_STORAGE_JWT_KEY, jwt.accessToken);
         })
       );
-  }
-
-  private saveJwtToLocalStorage(jwt: JWTResponse): void {
-    localStorage.setItem(LOCAL_STORAGE_JWT_KEY, jwt.accessToken);
   }
 }
