@@ -48,5 +48,11 @@ namespace WebVote.Data.Repositories
       _context.Polls.Update(poll);
       _context.SaveChanges();
     }
+
+    public void Remove(Poll poll)
+    {
+      _context.Polls.Remove(poll);
+      _context.SaveChanges();
+    }
   }
 }

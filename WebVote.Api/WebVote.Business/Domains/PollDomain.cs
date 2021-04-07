@@ -33,6 +33,11 @@ namespace WebVote.Business.Domains
       _pollRepository.Create(poll);
     }
 
+    public void DeletePoll(int id)
+    {
+      _pollRepository.Remove(new Poll { Id = id });
+    }
+
     public IList<PollInfoResponse> GetPollInfos()
     {
       var polls = _pollRepository.ReadPollInfos();

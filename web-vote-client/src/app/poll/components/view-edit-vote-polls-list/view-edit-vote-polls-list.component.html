@@ -1,3 +1,29 @@
+<ng-template #deletePollModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Warning !!!</h4>
+    <button type="button" class="close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      Do you really want to delete <strong>{{ pollToDelete?.title }}</strong>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="modal.close()"
+    >
+      Yes
+    </button>
+    <button type="button" class="btn btn-success" (click)="modal.dismiss()">
+      No
+    </button>
+  </div>
+</ng-template>
+
 <div *ngIf="pollsInfo$ | async as pollsInfo; else loading">
   <div class="card mb-3" *ngFor="let pollInfo of pollsInfo">
     <div class="card-body">
@@ -8,6 +34,12 @@
         [routerLink]="['..', 'edit', pollInfo.id]"
         >Edit</a
       >
+      <button
+        class="card-link btn btn-danger"
+        (click)="openDeletePollModal(pollInfo, deletePollModal)"
+      >
+        Delete
+      </button>
       <!-- <button class="card-link btn btn-primary">Vote</button>
       <button class="card-link btn btn-success">View</button> -->
     </div>

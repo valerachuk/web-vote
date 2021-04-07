@@ -35,6 +35,14 @@ namespace WebVote.Api.Controllers
       return Ok();
     }
 
+    [HttpDelete("{id}")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
+    public IActionResult CreatePoll([FromRoute] int id)
+    {
+      _pollDomain.DeletePoll(id);
+      return Ok();
+    }
+
     [HttpGet("polls-info")]
     [Authorize]
     public IActionResult GetPollsInfo()

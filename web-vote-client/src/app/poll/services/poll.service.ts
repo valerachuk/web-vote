@@ -17,6 +17,10 @@ export class PollService {
     return this.http.post<void>(`${environment.baseApiUrl}poll/update`, poll);
   }
 
+  public deletePoll(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.baseApiUrl}poll/${id}`);
+  }
+
   public getPollsInfo(): Observable<Array<PollInfo>> {
     return this.http.get<Array<PollInfo>>(
       `${environment.baseApiUrl}poll/polls-info`
