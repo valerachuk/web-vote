@@ -27,12 +27,12 @@ export class AuthService {
     return this.jwtHelper.decodeToken(this.jwt).role;
   }
 
-  public get isSignedIn(): boolean {
-    if (this.jwt === null) {
-      return false;
-    }
+  public get isTokenExpired(): boolean {
+    return this.jwt !== null && this.jwtHelper.isTokenExpired(this.jwt);
+  }
 
-    return !this.jwtHelper.isTokenExpired(this.jwt);
+  public get isSignedIn(): boolean {
+    return this.jwt !== null && !this.jwtHelper.isTokenExpired(this.jwt);
   }
 
   private get jwt(): string | null {
@@ -45,6 +45,11 @@ export class AuthService {
   }
 
   public navigateAccordingToRole(): void {
+    if (this.isTokenExpired) {
+      this.signOut();
+      return;
+    }
+
     this.router.navigate(ROLE_ROUTE_MAP[this.role]);
   }
 
