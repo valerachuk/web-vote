@@ -74,7 +74,7 @@ namespace WebVote.Business.Domains
 
       if (errorMessage != null)
       {
-        throw new UserAlreadyExistsException(errorMessage);
+        throw new ConflictException(errorMessage);
       }
 
       var salt = CreateSalt();

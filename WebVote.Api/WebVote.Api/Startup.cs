@@ -94,12 +94,14 @@ namespace WebVote.Api
       services.AddTransient<IAuthDomain, AuthDomain>();
       services.AddTransient<IPersonDomain, PersonDomain>();
       services.AddTransient<IPollDomain, PollDomain>();
+      services.AddTransient<IVoterVoteDomain, VoterVoteDomain>();
 
       // Repositories
       services.AddTransient<IPersonRepository, PersonRepository>();
       services.AddTransient<IPasswordCredentialsRepository, PasswordCredentialsRepository>();
       services.AddTransient<IPollRepository, PollRepository>();
       services.AddTransient<IPollOptionRepository, PollOptionRepository>();
+      services.AddTransient<IVoterVoteRepository, VoterVoteRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

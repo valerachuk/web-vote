@@ -6,6 +6,7 @@ using WebVote.Constants;
 
 namespace WebVote.Api.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class PollController : ControllerBase
@@ -19,7 +20,7 @@ namespace WebVote.Api.Controllers
       _pollDomain = pollDomain;
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult CreatePoll([FromBody] CreatePollRequest createPollRequest)
     {
@@ -27,7 +28,7 @@ namespace WebVote.Api.Controllers
       return Ok();
     }
 
-    [HttpPost("update")]
+    [HttpPut]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult CreatePoll([FromBody] UpdatePollRequest updatePollRequest)
     {
@@ -37,21 +38,19 @@ namespace WebVote.Api.Controllers
 
     [HttpDelete("{id}")]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
-    public IActionResult CreatePoll([FromRoute] int id)
+    public IActionResult DeletePoll([FromRoute] int id)
     {
       _pollDomain.DeletePoll(id);
       return Ok();
     }
 
     [HttpGet("polls-info")]
-    [Authorize]
     public IActionResult GetPollsInfo()
     {
       return Ok(_pollDomain.GetPollInfos());
     }
 
-    [HttpGet("poll-with-options/{id}")]
-    [Authorize]
+    [HttpGet("{id}")]
     public IActionResult GetPollWithOptions([FromRoute] int id)
     {
       return Ok(_pollDomain.GetPollWithOptionsOrderedByOptionTitle(id));

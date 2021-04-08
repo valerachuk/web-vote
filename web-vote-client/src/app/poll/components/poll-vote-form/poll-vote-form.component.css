@@ -1,0 +1,15 @@
+:host .vote-radio {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+:host .vote-radio-label {
+  font-size: 40px;
+  padding: 0 15px;
+  font-size: bold;
+}
+
+:host .selected-option-background {
+  background-color: #007bff2d;
+}

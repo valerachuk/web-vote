@@ -48,7 +48,11 @@
         </button>
       </ng-template>
       <ng-template [ngIf]="pollsViewType === PollsViewType.Vote">
-        <button class="card-link btn btn-primary">Vote</button>
+        <a
+          class="card-link btn btn-primary"
+          [routerLink]="['..', 'vote', pollInfo.id]"
+          >Vote</a
+        >
       </ng-template>
       <!-- <button class="card-link btn btn-success">View</button> -->
     </div>

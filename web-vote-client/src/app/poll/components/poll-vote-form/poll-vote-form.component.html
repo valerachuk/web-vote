@@ -1,0 +1,64 @@
+<div *ngIf="poll$ | async as poll; else loading">
+  <div class="card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="card-body">
+        <h3 class="card-title">{{ poll.title }}</h3>
+        <p class="card-text">{{ poll.description }}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <div
+          class="btn-group-toggle"
+          ngbRadioGroup
+          [formControl]="voteOptionControl"
+        >
+          <li
+            class="list-group-item d-flex flex-column flex-sm-row align-items-center"
+            [class.selected-option-background]="
+              voteOptionControl.value === pollOption.id
+            "
+            *ngFor="let pollOption of poll.options"
+          >
+            <div class="flex-grow-1 align-self-start">
+              <h5>
+                {{ pollOption.title }}
+              </h5>
+              {{ pollOption.description }}
+            </div>
+
+            <label
+              ngbButtonLabel
+              class="vote-radio-label ml-0 ml-sm-3 mt-2 mt-sm-0"
+              [class]="
+                voteOptionControl.value === pollOption.id
+                  ? 'btn-primary'
+                  : 'btn-outline-primary'
+              "
+            >
+              <input
+                ngbButton
+                type="radio"
+                [value]="pollOption.id"
+                class="vote-radio"
+              />
+              &#10003;
+            </label>
+          </li>
+        </div>
+      </ul>
+      <div class="card-body d-flex justify-content-center">
+        <button
+          href="#"
+          class="card-link btn btn-primary btn-lg"
+          [disabled]="!form.valid"
+          type="submit"
+        >
+          Submit vote
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #loading>
+  <h1>Loading...</h1>
+</ng-template>

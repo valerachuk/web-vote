@@ -10,5 +10,6 @@ namespace WebVote.Data.Entities
     public string Description { get; set; }
 
     public IList<PollOption> Options { get; set; }
+    public IList<VoterVote> Votes { get; set; }
   }
 }

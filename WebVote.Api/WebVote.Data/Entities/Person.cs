@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebVote.Data.Entities
 {
@@ -11,5 +12,6 @@ namespace WebVote.Data.Entities
     public string IndividualTaxNumber { get; set; }
 
     public PasswordCredentials PasswordCredentials { get; set; }
+    public IList<VoterVote> Votes { get; set; }
   }
 }

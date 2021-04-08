@@ -9,6 +9,7 @@ namespace WebVote.Data
     DbSet<PasswordCredentials> PasswordCredentials { get; set; }
     DbSet<Poll> Polls { get; set; }
     DbSet<PollOption> PollOptions { get; set; }
+    DbSet<VoterVote> VoterVotes { get; set; }
 
     int SaveChanges();
   }

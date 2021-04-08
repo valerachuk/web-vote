@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
 
@@ -31,6 +32,11 @@ namespace WebVote.Data.Repositories
     {
       _context.PollOptions.RemoveRange(pollOptions);
       _context.SaveChanges();
+    }
+
+    public PollOption ReadById(int id)
+    {
+      return _context.PollOptions.FirstOrDefault(pollOption => pollOption.Id == id);
     }
   }
 }

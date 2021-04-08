@@ -28,7 +28,7 @@ namespace WebVote.Api.Controllers
       {
         _authDomain.Register(registerUserRequest);
       }
-      catch (UserAlreadyExistsException userExistsException)
+      catch (ConflictException userExistsException)
       {
         return UnprocessableEntity(userExistsException.Message);
       }

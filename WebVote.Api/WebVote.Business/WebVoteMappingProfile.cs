@@ -33,6 +33,8 @@ namespace WebVote.Business
       CreateMap<Poll, PollInfoResponse>();
       CreateMap<Poll, PollWithOptionsResponse>();
       CreateMap<PollOption, PollOptionResponse>();
+
+      CreateMap<SubmitVoteRequest, VoterVote>();
     }
   }
 }

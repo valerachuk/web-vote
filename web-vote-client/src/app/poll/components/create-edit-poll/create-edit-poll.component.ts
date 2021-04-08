@@ -37,23 +37,22 @@ export class CreateEditPollComponent implements OnInit {
   public ngOnInit(): void {
     this.isEditForm = this.route.snapshot.data.isEditForm;
 
-    if (this.isEditForm) {
-      this.form.disable();
-      const pollId = +this.route.snapshot.params.id;
-
-      this.pollService.getPollWithOptions(pollId).subscribe((poll) => {
-        poll.options.forEach(() => {
-          this.addOption();
-        });
-        this.form.patchValue(poll);
-
-        this.form.enable();
-      });
-
+    if (!this.isEditForm) {
+      this.addOption();
       return;
     }
 
-    this.addOption();
+    this.form.disable();
+    const pollId = +this.route.snapshot.params.id;
+
+    this.pollService.getPollWithOptions(pollId).subscribe((poll) => {
+      poll.options.forEach(() => {
+        this.addOption();
+      });
+      this.form.patchValue(poll);
+
+      this.form.enable();
+    });
   }
 
   public get titleControl(): FormControl {

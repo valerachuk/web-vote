@@ -11,6 +11,7 @@ namespace WebVote.Data
     public DbSet<PasswordCredentials> PasswordCredentials { get; set; }
     public DbSet<Poll> Polls { get; set; }
     public DbSet<PollOption> PollOptions { get; set; }
+    public DbSet<VoterVote> VoterVotes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,6 +19,7 @@ namespace WebVote.Data
       ConfigurePasswordCredentials(modelBuilder);
       ConfigurePoll(modelBuilder);
       ConfigurePollOptions(modelBuilder);
+      ConfigureVoterVotes(modelBuilder);
     }
 
     private static void ConfigurePasswordCredentials(ModelBuilder modelBuilder)
@@ -46,9 +48,7 @@ namespace WebVote.Data
       passwordCredentialsModelBuilder
         .HasOne(credentials => credentials.Person)
         .WithOne(person => person.PasswordCredentials)
-        .HasForeignKey<PasswordCredentials>(credentials => credentials.PersonId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+        .HasForeignKey<PasswordCredentials>(credentials => credentials.PersonId);
     }
 
     private static void ConfigurePerson(ModelBuilder modelBuilder)
@@ -113,9 +113,30 @@ namespace WebVote.Data
       pollOptionModelBuilder
         .HasOne(x => x.Poll)
         .WithMany(x => x.Options)
-        .HasForeignKey(x => x.PollId)
-        .OnDelete(DeleteBehavior.Cascade)
-        .IsRequired();
+        .HasForeignKey(x => x.PollId);
+    }
+
+    private static void ConfigureVoterVotes(ModelBuilder modelBuilder)
+    {
+      var voterVoteModelBuilder = modelBuilder.Entity<VoterVote>();
+
+      voterVoteModelBuilder
+        .HasKey(voterVote => new { voterVote.PersonId, voterVote.PollId });
+
+      voterVoteModelBuilder
+        .HasOne(voterVote => voterVote.Person)
+        .WithMany(person => person.Votes)
+        .HasForeignKey(voterVote => voterVote.PersonId);
+
+      voterVoteModelBuilder
+        .HasOne(voterVote => voterVote.Poll)
+        .WithMany(poll => poll.Votes)
+        .HasForeignKey(voterVote => voterVote.PollId);
+
+      voterVoteModelBuilder
+        .HasOne(voterVote => voterVote.PollOption)
+        .WithMany(option => option.Votes)
+        .HasForeignKey(voterVote => voterVote.PollOptionId);
     }
   }
 }

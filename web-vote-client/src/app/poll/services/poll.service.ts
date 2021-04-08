@@ -4,17 +4,18 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PollInfo } from '../interfaces/poll-info.interface';
 import { Poll } from '../interfaces/poll.interface';
+import { VoteForm } from '../interfaces/vote-form.interface';
 
 @Injectable()
 export class PollService {
   constructor(private readonly http: HttpClient) {}
 
   public createPoll(poll: Poll): Observable<void> {
-    return this.http.post<void>(`${environment.baseApiUrl}poll/create`, poll);
+    return this.http.post<void>(`${environment.baseApiUrl}poll`, poll);
   }
 
   public updatePoll(poll: Poll): Observable<void> {
-    return this.http.post<void>(`${environment.baseApiUrl}poll/update`, poll);
+    return this.http.put<void>(`${environment.baseApiUrl}poll`, poll);
   }
 
   public deletePoll(id: number): Observable<void> {
@@ -28,8 +29,6 @@ export class PollService {
   }
 
   public getPollWithOptions(id: number): Observable<Poll> {
-    return this.http.get<Poll>(
-      `${environment.baseApiUrl}poll/poll-with-options/${id}`
-    );
+    return this.http.get<Poll>(`${environment.baseApiUrl}poll/${id}`);
   }
 }

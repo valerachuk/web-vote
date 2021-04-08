@@ -8,9 +8,15 @@ import { SharedModule } from '../shared/shared.module';
 import { PollService } from './services/poll.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewEditVotePollsListComponent } from './components/view-edit-vote-polls-list/view-edit-vote-polls-list.component';
+import { PollVoteFormComponent } from './components/poll-vote-form/poll-vote-form.component';
+import { VoteService } from './services/vote.service';
 
 @NgModule({
-  declarations: [CreateEditPollComponent, ViewEditVotePollsListComponent],
+  declarations: [
+    CreateEditPollComponent,
+    ViewEditVotePollsListComponent,
+    PollVoteFormComponent,
+  ],
   imports: [
     CommonModule,
     PollRoutingModule,
@@ -18,6 +24,6 @@ import { ViewEditVotePollsListComponent } from './components/view-edit-vote-poll
     SharedModule,
     NgbModule,
   ],
-  providers: [PollService],
+  providers: [PollService, VoteService],
 })
 export class PollModule {}
