@@ -33,13 +33,13 @@ namespace WebVote.Business.Domains
 
       if (pollOption == null || pollOption.PollId != voterVote.PollId)
       {
-        throw new BadRequestException();
+        throw new UnprocessableEntityException();
       }
 
       var expectedExistingVote = _voterVoteRepository.ReadByPollIdAndPersonId(voterVote.PollId, voterVote.PersonId);
       if (expectedExistingVote != null)
       {
-        throw new BadRequestException();
+        throw new UnprocessableEntityException();
       }
 
       _voterVoteRepository.CreateVote(voterVote);

@@ -5,11 +5,11 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { FormHelperService } from './services/form-helper.service';
 import { GlobalToastService } from './services/global-toast.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenExpiredCheckerInterceptor } from './services/token-expired-checker.interceptor';
+import { HTTPErrorInterceptor } from './services/http-error.interceptor';
 
 const authInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
-  useClass: TokenExpiredCheckerInterceptor,
+  useClass: HTTPErrorInterceptor,
   multi: true,
 };
 

@@ -55,7 +55,11 @@ export class AuthService {
 
   public signIn(signinForm: SignInForm): Observable<JWTResponse> {
     return this.http
-      .post<JWTResponse>(`${environment.baseApiUrl}auth/login`, signinForm)
+      .post<JWTResponse>(`${environment.baseApiUrl}auth/login`, signinForm, {
+        headers: {
+          ngiSkip: '422',
+        },
+      })
       .pipe(
         tap((jwt) => {
           localStorage.setItem(LOCAL_STORAGE_JWT_KEY, jwt.accessToken);

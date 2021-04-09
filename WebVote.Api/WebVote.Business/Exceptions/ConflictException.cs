@@ -4,7 +4,7 @@ namespace WebVote.Business.Exceptions
 {
   public class ConflictException : Exception
   {
-    public ConflictException() { }
+    public ConflictException() : base("Conflict") { }
     public ConflictException(string message) : base(message) { }
   }
 }

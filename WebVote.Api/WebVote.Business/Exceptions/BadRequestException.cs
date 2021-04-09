@@ -4,7 +4,7 @@ namespace WebVote.Business.Exceptions
 {
   public class BadRequestException : Exception
   {
-    public BadRequestException() { }
+    public BadRequestException() : base("BadRequest") { }
     public BadRequestException(string message) : base(message) { }
   }
 }

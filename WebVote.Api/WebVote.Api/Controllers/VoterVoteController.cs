@@ -20,15 +20,8 @@ namespace WebVote.Api.Controllers
     [HttpPost]
     public IActionResult SubmitVote([FromBody] SubmitVoteRequest submitVoteRequest)
     {
-      try
-      {
-        _voterVoteDomain.AddVote(submitVoteRequest, User.GetId());
-        return Ok();
-      }
-      catch (BadRequestException)
-      {
-        return BadRequest();
-      }
+      _voterVoteDomain.AddVote(submitVoteRequest, User.GetId());
+      return Ok();
     }
   }
 }

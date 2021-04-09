@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.Exceptions;
 using WebVote.Business.RESTRequests;
 using WebVote.Constants;
 
@@ -24,33 +23,18 @@ namespace WebVote.Api.Controllers
     [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
     public IActionResult RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
-      try
-      {
-        _authDomain.Register(registerUserRequest);
-      }
-      catch (ConflictException userExistsException)
-      {
-        return UnprocessableEntity(userExistsException.Message);
-      }
-
+      _authDomain.Register(registerUserRequest);
       return Ok();
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest loginRequest)
     {
-      try
+      var jwt = _authDomain.Login(loginRequest);
+      return Ok(new
       {
-        var jwt = _authDomain.Login(loginRequest);
-        return Ok(new
-        {
-          AccessToken = jwt
-        });
-      }
-      catch (ForbiddenException forbiddenException)
-      {
-        return UnprocessableEntity(forbiddenException.Message);
-      }
+        AccessToken = jwt
+      });
     }
   }
 }

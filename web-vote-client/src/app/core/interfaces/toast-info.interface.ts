@@ -1,6 +1,6 @@
 export interface ToastInfo {
   title: string;
   delay: number;
-  styleClass: string;
+  styleClass?: string;
   message: string;
 }

@@ -13,20 +13,17 @@
 
       <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li
+            class="nav-item"
+            [class.active]="activeViewPollsListLink.isActive"
+          >
             <a
               class="nav-link"
-              [routerLink]="'.'"
+              [routerLink]="['poll', 'vote-polls-list']"
               (click)="isMenuCollapsed = true"
-              >Active votes</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              [routerLink]="'.'"
-              (click)="isMenuCollapsed = true"
-              >Archive votes</a
+              routerLinkActive
+              #activeViewPollsListLink="routerLinkActive"
+              >Active polls</a
             >
           </li>
         </ul>
@@ -34,7 +31,7 @@
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container layout-container">
     <router-outlet></router-outlet>
   </div>
 </div>

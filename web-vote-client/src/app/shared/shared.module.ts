@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogoutButtonDirective } from './directives/logout-button.directive';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
-  declarations: [LogoutButtonDirective],
+  declarations: [LogoutButtonDirective, SpinnerComponent],
   imports: [CommonModule],
-  exports: [LogoutButtonDirective],
+  exports: [LogoutButtonDirective, SpinnerComponent],
 })
 export class SharedModule {}

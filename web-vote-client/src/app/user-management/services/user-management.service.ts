@@ -9,6 +9,14 @@ export class UserManagementService {
   constructor(private readonly http: HttpClient) {}
 
   public registerVoter(form: RegisterForm): Observable<void> {
-    return this.http.post<void>(`${environment.baseApiUrl}auth/register`, form);
+    return this.http.post<void>(
+      `${environment.baseApiUrl}auth/register`,
+      form,
+      {
+        headers: {
+          ngiSkip: '409',
+        },
+      }
+    );
   }
 }

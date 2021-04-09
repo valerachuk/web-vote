@@ -94,7 +94,7 @@ namespace WebVote.Business.Domains
 
       if (passwordCredentials == null)
       {
-        throw new ForbiddenException("Invalid login");
+        throw new UnprocessableEntityException("Invalid login");
       }
 
       var passwordHashFromLogin = ComputePasswordHash(passwordCredentials.Salt, loginRequest.Password);
@@ -104,7 +104,7 @@ namespace WebVote.Business.Domains
         return GenerateJWT(passwordCredentials.PersonId, passwordCredentials.Person.Role);
       }
 
-      throw new ForbiddenException("Invalid password");
+      throw new UnprocessableEntityException("Invalid password");
     }
 
     private string GenerateJWT(int userId, string role)

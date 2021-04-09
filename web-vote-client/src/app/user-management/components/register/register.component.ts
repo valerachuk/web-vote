@@ -77,7 +77,7 @@ export class RegisterComponent {
         this.form.reset();
       },
       (error) => {
-        if (error.status === 422) {
+        if (error.status === 409) {
           this.serverValidationError = error.error;
           this.form.enable();
         }

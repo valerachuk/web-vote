@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WebVote.Api.Middlewares;
 using WebVote.Business;
 using WebVote.Business.Common;
 using WebVote.Business.Domains;
@@ -121,6 +122,8 @@ namespace WebVote.Api
 
       app.UseAuthentication();
       app.UseAuthorization();
+
+      app.UseMiddleware<ExceptionMiddleware>();
 
       app.UseEndpoints(endpoints =>
       {

@@ -23,12 +23,25 @@
               >Register voter</a
             >
           </li>
+          <li
+            class="nav-item"
+            [class.active]="activeViewPollsListLink.isActive"
+          >
+            <a
+              class="nav-link"
+              [routerLink]="['poll', 'vote-polls-list']"
+              (click)="isMenuCollapsed = true"
+              routerLinkActive
+              #activeViewPollsListLink="routerLinkActive"
+              >Active polls</a
+            >
+          </li>
         </ul>
         <button class="btn btn-outline-light" appLogoutButton>Logout</button>
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container layout-container">
     <router-outlet></router-outlet>
   </div>
 </div>
