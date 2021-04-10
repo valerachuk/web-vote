@@ -38,10 +38,22 @@ namespace WebVote.Business.Domains
       _pollRepository.Remove(new Poll { Id = id });
     }
 
-    public IList<PollInfoResponse> GetPollInfos()
+    public IList<PollInfoResponse> GetPolls()
     {
-      var polls = _pollRepository.ReadPollInfos();
+      var polls = _pollRepository.ReadPolls();
       return _mapper.Map<IList<PollInfoResponse>>(polls);
+    }
+
+    public IList<PollInfoResponse> GetVotablePolls(int userId)
+    {
+      var polls = _pollRepository.ReadVotablePolls(userId);
+      return _mapper.Map<IList<PollInfoResponse>>(polls);
+    }
+
+    public IList<PollTitleResponse> GetPollsTitles()
+    {
+      var polls = _pollRepository.ReadPolls();
+      return _mapper.Map<IList<PollTitleResponse>>(polls);
     }
 
     public PollWithOptionsResponse GetPollWithOptionsOrderedByOptionTitle(int id)

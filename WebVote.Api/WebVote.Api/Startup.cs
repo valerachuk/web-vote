@@ -96,6 +96,7 @@ namespace WebVote.Api
       services.AddTransient<IPersonDomain, PersonDomain>();
       services.AddTransient<IPollDomain, PollDomain>();
       services.AddTransient<IVoterVoteDomain, VoterVoteDomain>();
+      services.AddTransient<IPollOptionDomain, PollOptionDomain>();
 
       // Repositories
       services.AddTransient<IPersonRepository, PersonRepository>();

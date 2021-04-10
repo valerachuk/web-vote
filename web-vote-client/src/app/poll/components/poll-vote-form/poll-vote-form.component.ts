@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
-import { Poll } from '../../interfaces/poll.interface';
-import { PollService } from '../../services/poll.service';
+import { Poll } from '../../../interfaces/poll.interface';
+import { PollService } from '../../../core/services/poll.service';
 import { VoteService } from '../../services/vote.service';
 
 @Component({

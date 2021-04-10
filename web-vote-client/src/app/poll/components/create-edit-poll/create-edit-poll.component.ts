@@ -9,8 +9,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { FormHelperService } from 'src/app/core/services/form-helper.service';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
-import { Poll } from '../../interfaces/poll.interface';
-import { PollService } from '../../services/poll.service';
+import { PollService } from '../../../core/services/poll.service';
 
 @Component({
   selector: 'app-create-edit-poll',

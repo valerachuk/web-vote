@@ -1,0 +1,53 @@
+<div
+  class="card"
+  *ngIf="pollsTitles$ | async as pollsTitles; else loadingPollsTitles"
+>
+  <div class="card-body">
+    <h2 class="card-title text-center">Polls results</h2>
+    <div *ngIf="pollsTitles.length !== 0; else noPolls">
+      <div class="form-group">
+        <label for="pollSelect">Poll</label>
+        <select class="form-control" id="pollSelect" #pollSelect>
+          <option *ngFor="let pollTitle of pollsTitles" [value]="pollTitle.id">
+            {{ pollTitle.id }}) {{ pollTitle.title }}
+          </option>
+        </select>
+      </div>
+      <button
+        class="btn btn-primary"
+        (click)="onResultRequested()"
+        [disabled]="isResultsLoading"
+      >
+        Request results
+      </button>
+    </div>
+
+    <ng-template #noPolls>
+      <p class="card-text">You have to create at least one poll</p>
+    </ng-template>
+
+    <table
+      class="table table-striped mt-4"
+      *ngIf="pollsOptionsVotes$ | async as pollsOptionsVotes"
+    >
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Option</th>
+          <th scope="col">Votes count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pollOptionVote of pollsOptionsVotes">
+          <th scope="row">{{ pollOptionVote.id | number }}</th>
+          <td>{{ pollOptionVote.title }}</td>
+          <td>{{ pollOptionVote.votesCount | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <app-spinner *ngIf="isResultsLoading"></app-spinner>
+  </div>
+</div>
+<ng-template #loadingPollsTitles>
+  <app-spinner></app-spinner>
+</ng-template>

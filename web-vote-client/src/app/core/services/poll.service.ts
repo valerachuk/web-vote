@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PollTitle } from 'src/app/interfaces/poll-title.interface';
 import { environment } from 'src/environments/environment';
-import { PollInfo } from '../interfaces/poll-info.interface';
-import { Poll } from '../interfaces/poll.interface';
-import { VoteForm } from '../interfaces/vote-form.interface';
+import { PollInfo } from '../../interfaces/poll-info.interface';
+import { Poll } from '../../interfaces/poll.interface';
 
 @Injectable()
 export class PollService {
@@ -25,6 +25,18 @@ export class PollService {
   public getPollsInfo(): Observable<Array<PollInfo>> {
     return this.http.get<Array<PollInfo>>(
       `${environment.baseApiUrl}poll/polls-info`
+    );
+  }
+
+  public getPollsTitles(): Observable<Array<PollTitle>> {
+    return this.http.get<Array<PollTitle>>(
+      `${environment.baseApiUrl}poll/polls-titles`
+    );
+  }
+
+  public getVotablePollsInfo(): Observable<Array<PollInfo>> {
+    return this.http.get<Array<PollInfo>>(
+      `${environment.baseApiUrl}poll/votable-polls-info`
     );
   }
 

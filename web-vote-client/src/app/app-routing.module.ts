@@ -7,6 +7,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./layout/layout.module').then((m) => m.LayoutModule),
   },
+  { path: 'analytics', loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule) },
 ];
 
 @NgModule({

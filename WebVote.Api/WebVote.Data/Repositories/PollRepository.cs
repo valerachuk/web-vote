@@ -23,9 +23,15 @@ namespace WebVote.Data.Repositories
       _context.SaveChanges();
     }
 
-    public IList<Poll> ReadPollInfos()
+    public IList<Poll> ReadPolls()
     {
       return _context.Polls.ToList();
+    }
+
+    public IList<Poll> ReadVotablePolls(int personId)
+    {
+      var personVotedPollIds = _context.VoterVotes.Where(vote => vote.PersonId == personId).Select(vote => vote.PollId);
+      return _context.Polls.Where(poll => personVotedPollIds.All(votedPollId => votedPollId != poll.Id)).ToList();
     }
 
     public Poll ReadPollWithOptions(int id)

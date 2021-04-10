@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebVote.Api.Extensions;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Constants;
@@ -45,9 +46,23 @@ namespace WebVote.Api.Controllers
     }
 
     [HttpGet("polls-info")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult GetPollsInfo()
     {
-      return Ok(_pollDomain.GetPollInfos());
+      return Ok(_pollDomain.GetPolls());
+    }
+
+    [HttpGet("polls-titles")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
+    public IActionResult GetPollsTitles()
+    {
+      return Ok(_pollDomain.GetPollsTitles());
+    }
+
+    [HttpGet("votable-polls-info")]
+    public IActionResult GetVotablePollsInfo()
+    {
+      return Ok(_pollDomain.GetVotablePolls(User.GetId()));
     }
 
     [HttpGet("{id}")]

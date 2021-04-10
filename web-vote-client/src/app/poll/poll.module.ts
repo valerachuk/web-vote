@@ -5,7 +5,6 @@ import { PollRoutingModule } from './poll-routing.module';
 import { CreateEditPollComponent } from './components/create-edit-poll/create-edit-poll.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { PollService } from './services/poll.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewEditVotePollsListComponent } from './components/view-edit-vote-polls-list/view-edit-vote-polls-list.component';
 import { PollVoteFormComponent } from './components/poll-vote-form/poll-vote-form.component';
@@ -24,6 +23,6 @@ import { VoteService } from './services/vote.service';
     SharedModule,
     NgbModule,
   ],
-  providers: [PollService, VoteService],
+  providers: [VoteService],
 })
 export class PollModule {}

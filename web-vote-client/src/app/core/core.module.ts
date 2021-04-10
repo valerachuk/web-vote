@@ -6,6 +6,7 @@ import { FormHelperService } from './services/form-helper.service';
 import { GlobalToastService } from './services/global-toast.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HTTPErrorInterceptor } from './services/http-error.interceptor';
+import { PollService } from './services/poll.service';
 
 const authInterceptorProvider: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -19,6 +20,7 @@ const authInterceptorProvider: Provider = {
     AuthGuardService,
     FormHelperService,
     GlobalToastService,
+    PollService,
     authInterceptorProvider,
   ],
   imports: [CommonModule],

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebVote.Business.RESTResponses.PollOption;
 
 namespace WebVote.Business.RESTResponses.Poll
 {

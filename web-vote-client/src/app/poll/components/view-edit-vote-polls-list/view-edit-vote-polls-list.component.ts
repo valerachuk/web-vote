@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
-import { PollInfo } from '../../interfaces/poll-info.interface';
-import { PollService } from '../../services/poll.service';
+import { PollInfo } from '../../../interfaces/poll-info.interface';
+import { PollService } from '../../../core/services/poll.service';
 import { PollsViewType } from '../../../constants/polls-view-type.enum';
 
 @Component({
@@ -28,6 +28,12 @@ export class ViewEditVotePollsListComponent implements OnInit {
   public ngOnInit(): void {
     this.pollsViewType = this.route.snapshot.data
       .pollsViewType as PollsViewType;
+
+    if (this.pollsViewType === PollsViewType.Vote) {
+      this.pollsInfo$ = this.pollSerivce.getVotablePollsInfo();
+      return;
+    }
+
     this.pollsInfo$ = this.pollSerivce.getPollsInfo();
   }
 

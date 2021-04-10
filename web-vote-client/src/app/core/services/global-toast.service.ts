@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastInfo } from '../interfaces/toast-info.interface';
+import { ToastInfo } from '../../interfaces/toast-info.interface';
 
 @Injectable()
 export class GlobalToastService {

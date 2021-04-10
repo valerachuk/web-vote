@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
@@ -37,6 +38,14 @@ namespace WebVote.Data.Repositories
     public PollOption ReadById(int id)
     {
       return _context.PollOptions.FirstOrDefault(pollOption => pollOption.Id == id);
+    }
+
+    public IList<ValueTuple<PollOption, int>> ReadPollResults(int pollId)
+    {
+      return _context.PollOptions.Where(pollOption => pollOption.PollId == pollId)
+        .OrderByDescending(pollOption => pollOption.Votes.Count)
+        .Select(pollOption => ValueTuple.Create(pollOption, pollOption.Votes.Count))
+        .ToList();
     }
   }
 }

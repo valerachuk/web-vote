@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebVote.Api.Extensions;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.Exceptions;
 using WebVote.Business.RESTRequests;
 
 namespace WebVote.Api.Controllers

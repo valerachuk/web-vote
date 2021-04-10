@@ -6,7 +6,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormHelperService } from 'src/app/core/services/form-helper.service';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
-import { RegisterForm } from '../../interfaces/register-form.interface';
+import { RegisterForm } from '../../../interfaces/register-form.interface';
 import { UserManagementService } from '../../services/user-management.service';
 
 @Component({

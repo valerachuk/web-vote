@@ -8,7 +8,8 @@ namespace WebVote.Data.Repositories.Interfaces
     void Create(Poll poll);
     void Update(Poll poll);
     void Remove(Poll poll);
-    IList<Poll> ReadPollInfos();
+    IList<Poll> ReadPolls();
+    IList<Poll> ReadVotablePolls(int personId);
     Poll ReadPollWithOptions(int id);
     IList<int> ReadOptionsIdsOfPoll(int pollId);
   }

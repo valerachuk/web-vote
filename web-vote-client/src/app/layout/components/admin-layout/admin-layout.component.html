@@ -59,6 +59,16 @@
               >Active polls</a
             >
           </li>
+          <li class="nav-item" [class.active]="activePollsResultsLink.isActive">
+            <a
+              class="nav-link"
+              [routerLink]="['analytics', 'polls-results']"
+              (click)="isMenuCollapsed = true"
+              routerLinkActive
+              #activePollsResultsLink="routerLinkActive"
+              >Polls results</a
+            >
+          </li>
         </ul>
         <button class="btn btn-outline-light" appLogoutButton>Logout</button>
       </div>

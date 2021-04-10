@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WebVote.Data.Entities;
 
 namespace WebVote.Data.Repositories.Interfaces
@@ -9,5 +10,6 @@ namespace WebVote.Data.Repositories.Interfaces
     void UpdateRange(IEnumerable<PollOption> pollOptions);
     void RemoveRange(IEnumerable<PollOption> pollOptions);
     PollOption ReadById(int id);
+    IList<ValueTuple<PollOption, int>> ReadPollResults(int pollId);
   }
 }

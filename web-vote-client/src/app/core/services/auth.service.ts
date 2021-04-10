@@ -8,8 +8,8 @@ import { UserRole } from 'src/app/constants/user-roles.enum';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { ROLE_ROUTE_MAP } from 'src/app/constants/role-route-map.constant';
-import { JWTResponse } from '../interfaces/jwt-response.interface';
-import { SignInForm } from '../interfaces/sign-in-form.interface';
+import { JWTResponse } from '../../interfaces/jwt-response.interface';
+import { SignInForm } from '../../interfaces/sign-in-form.interface';
 
 @Injectable()
 export class AuthService {
