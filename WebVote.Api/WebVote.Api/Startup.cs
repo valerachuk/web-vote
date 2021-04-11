@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WebVote.Api.Extensions;
 using WebVote.Api.Middlewares;
 using WebVote.Business;
 using WebVote.Business.Common;
@@ -109,6 +110,11 @@ namespace WebVote.Api
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      if (env.IsDevelopment() || env.IsStaging())
+      {
+        app.MigrateAndSeedDatabase();
+      }
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();

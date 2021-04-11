@@ -13,6 +13,11 @@ namespace WebVote.Data
     public DbSet<PollOption> PollOptions { get; set; }
     public DbSet<VoterVote> VoterVotes { get; set; }
 
+    public void Migrate()
+    {
+      this.Database.Migrate();
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       ConfigurePerson(modelBuilder);

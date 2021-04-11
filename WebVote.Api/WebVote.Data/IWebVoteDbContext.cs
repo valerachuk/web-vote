@@ -12,5 +12,6 @@ namespace WebVote.Data
     DbSet<VoterVote> VoterVotes { get; set; }
 
     int SaveChanges();
+    void Migrate();
   }
 }
