@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="regions$ | async as regions; else loadingPollsTitles">
   <div class="card-body">
     <h2 class="card-title text-center">Register voter</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -32,6 +32,22 @@
           [class.is-invalid]="formHelper.isInvalidAndTouched(birthControl)"
         />
         <div class="invalid-feedback">Birth should not be empty</div>
+      </div>
+
+      <div class="form-group">
+        <label for="stateSelect">Region</label>
+        <select
+          class="form-control"
+          id="stateSelect"
+          [formControl]="regionControl"
+        >
+          <option
+            *ngFor="let region of regions; index as idx"
+            [value]="region.id"
+          >
+            {{ region.id }}) {{ region.name }}
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -84,3 +100,6 @@
     </form>
   </div>
 </div>
+<ng-template #loadingPollsTitles>
+  <app-spinner></app-spinner>
+</ng-template>

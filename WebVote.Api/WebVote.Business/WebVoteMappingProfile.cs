@@ -20,6 +20,7 @@ namespace WebVote.Business
         .ForMember(person => person.Role, opt => opt.MapFrom(registerUserRequest => UserRoles.VOTER));
 
       CreateMap<Person, PersonInfoResponse>();
+      CreateMap<Region, RegionResponse>();
 
       CreateMap<CreatePollOptionRequest, PollOption>();
       CreateMap<CreatePollRequest, Poll>();

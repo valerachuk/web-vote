@@ -20,7 +20,6 @@ const jwtModule = JwtModule.forRoot({
 
 @NgModule({
   declarations: [AppComponent, ToastContainerComponent],
-  providers: [UserManagementService],
   imports: [
     BrowserModule,
     AppRoutingModule,

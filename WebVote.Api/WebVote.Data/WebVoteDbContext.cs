@@ -8,6 +8,7 @@ namespace WebVote.Data
     public WebVoteDbContext(DbContextOptions contextOptions) : base(contextOptions) { }
 
     public DbSet<Person> People { get; set; }
+    public DbSet<Region> Regions { get; set; }
     public DbSet<PasswordCredentials> PasswordCredentials { get; set; }
     public DbSet<Poll> Polls { get; set; }
     public DbSet<PollOption> PollOptions { get; set; }
@@ -15,7 +16,7 @@ namespace WebVote.Data
 
     public void Migrate()
     {
-      this.Database.Migrate();
+      Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +26,7 @@ namespace WebVote.Data
       ConfigurePoll(modelBuilder);
       ConfigurePollOptions(modelBuilder);
       ConfigureVoterVotes(modelBuilder);
+      ConfigureRegions(modelBuilder);
     }
 
     private static void ConfigurePasswordCredentials(ModelBuilder modelBuilder)
@@ -82,6 +84,11 @@ namespace WebVote.Data
       personModelBuilder
         .HasIndex(person => person.IndividualTaxNumber)
         .IsUnique();
+
+      personModelBuilder
+        .HasOne(person => person.Region)
+        .WithMany(region => region.Citizens)
+        .HasForeignKey(person => person.RegionId);
     }
 
     private static void ConfigurePoll(ModelBuilder modelBuilder)
@@ -142,6 +149,23 @@ namespace WebVote.Data
         .HasOne(voterVote => voterVote.PollOption)
         .WithMany(option => option.Votes)
         .HasForeignKey(voterVote => voterVote.PollOptionId);
+
+      //voterVoteModelBuilder
+      //  .HasOne(voterVote => voterVote.Region)
+      //  .WithMany(region => region.Votes)
+      //  .HasForeignKey(voterVote => voterVote.RegionId);
+    }
+
+    private static void ConfigureRegions(ModelBuilder modelBuilder)
+    {
+      var regionModelBuilder = modelBuilder.Entity<Region>();
+
+      regionModelBuilder
+        .HasKey(region => region.Id);
+
+      regionModelBuilder
+        .Property(region => region.Name)
+        .IsRequired();
     }
   }
 }

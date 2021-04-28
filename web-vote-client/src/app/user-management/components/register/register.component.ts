@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   NgbCalendar,
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { FormHelperService } from 'src/app/core/services/form-helper.service';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
+import { Region } from 'src/app/interfaces/region.interface';
 import { RegisterForm } from '../../../interfaces/register-form.interface';
+import { RegionService } from '../../services/region.service';
 import { UserManagementService } from '../../services/user-management.service';
 
 @Component({
@@ -14,18 +17,20 @@ import { UserManagementService } from '../../services/user-management.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   constructor(
     public readonly ngbCalendar: NgbCalendar,
     public readonly formHelper: FormHelperService,
     private readonly ngbDateParserFormatter: NgbDateParserFormatter,
     private readonly userManagementService: UserManagementService,
-    private readonly toastService: GlobalToastService
+    private readonly toastService: GlobalToastService,
+    private readonly regionService: RegionService
   ) {}
 
   public readonly form = new FormGroup({
     fullName: new FormControl('', Validators.required),
     birth: new FormControl(null, Validators.required),
+    regionId: new FormControl(),
     individualTaxNumber: new FormControl('', Validators.required),
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
@@ -33,7 +38,20 @@ export class RegisterComponent {
 
   public readonly minDate = { year: 1900, month: 1, day: 1 };
 
+  public regions$: Observable<Array<Region>> | null = null;
+
   public serverValidationError = '';
+
+  ngOnInit(): void {
+    this.regions$ = this.regionService.getRegions();
+    this.selectFirstRegion();
+  }
+
+  private selectFirstRegion(): void {
+    this.regions$?.subscribe((states) => {
+      this.regionControl.setValue(states[0]?.id);
+    });
+  }
 
   public get fullNameControl(): FormControl {
     return this.form.get('fullName') as FormControl;
@@ -55,6 +73,10 @@ export class RegisterComponent {
     return this.form.get('password') as FormControl;
   }
 
+  public get regionControl(): FormControl {
+    return this.form.get('regionId') as FormControl;
+  }
+
   public onSubmit(): void {
     this.form.markAllAsTouched();
 
@@ -66,6 +88,7 @@ export class RegisterComponent {
 
     const formWithStringDate = Object.assign({}, this.form.value, {
       birth: this.ngbDateParserFormatter.format(this.form.value.birth),
+      regionId: +this.form.value.regionId,
     }) as RegisterForm;
 
     this.userManagementService.registerVoter(formWithStringDate).subscribe(
@@ -75,6 +98,7 @@ export class RegisterComponent {
         );
         this.form.enable();
         this.form.reset();
+        this.selectFirstRegion();
       },
       (error) => {
         if (error.status === 409) {

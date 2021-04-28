@@ -11,6 +11,8 @@ namespace WebVote.Data.Extensions
 {
   public static class WebVoteDbContextExtensions
   {
+    private static readonly Random Rnd = new Random();
+
     public static void EnsureSeededWithLargeData(this IWebVoteDbContext webVoteDbContext, int usersCount = 100_000)
     {
       if (!IsDatabaseEmpty(webVoteDbContext))
@@ -18,12 +20,13 @@ namespace WebVote.Data.Extensions
         return;
       }
 
-      var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN);
-      var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER);
-      var voter = CreateUserWithPasswordCredentials("v", "7EAhtdHKqauCXQwU", UserRoles.VOTER);
-
+      var regions = GetRegions();
+      var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN, regions[0]);
+      var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER, regions[1]);
+      var voter = CreateUserWithPasswordCredentials("v", "7EAhtdHKqauCXQwU", UserRoles.VOTER, regions[2]);
       var polls = GetDummyPolls();
 
+      webVoteDbContext.Regions.AddRange(regions);
       webVoteDbContext.People.AddRange(new[] { admin, manager, voter });
       webVoteDbContext.Polls.AddRange(polls);
       webVoteDbContext.SaveChanges();
@@ -51,14 +54,16 @@ namespace WebVote.Data.Extensions
         return;
       }
 
-      var people = GetDummyPeople();
+      var regions = GetRegions();
+      var people = GetDummyPeople(regions);
       var polls = GetDummyPolls();
       var votes = GetDummyVotes(people, polls);
 
-      var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN);
-      var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER);
-      var voter = CreateUserWithPasswordCredentials("v", "7EAhtdHKqauCXQwU", UserRoles.VOTER);
+      var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN, regions[0]);
+      var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER, regions[1]);
+      var voter = CreateUserWithPasswordCredentials("v", "7EAhtdHKqauCXQwU", UserRoles.VOTER, regions[2]);
 
+      webVoteDbContext.Regions.AddRange(regions);
       webVoteDbContext.People.AddRange(new[] { admin, manager, voter });
       webVoteDbContext.People.AddRange(people);
       webVoteDbContext.Polls.AddRange(polls);
@@ -72,10 +77,11 @@ namespace WebVote.Data.Extensions
              webVoteDbContext.PollOptions.Any() ||
              webVoteDbContext.People.Any() ||
              webVoteDbContext.VoterVotes.Any() ||
-             webVoteDbContext.PasswordCredentials.Any());
+             webVoteDbContext.PasswordCredentials.Any() ||
+             webVoteDbContext.Regions.Any());
     }
 
-    public static Person CreateUserWithPasswordCredentials(string login, string password, string role)
+    public static Person CreateUserWithPasswordCredentials(string login, string password, string role, Region region)
     {
       var sha256 = SHA256.Create();
       var passwordCredentials = new PasswordCredentials
@@ -91,13 +97,13 @@ namespace WebVote.Data.Extensions
         FullName = Guid.NewGuid().ToString(),
         IndividualTaxNumber = Guid.NewGuid().ToString(),
         Role = role,
-        PasswordCredentials = passwordCredentials
+        PasswordCredentials = passwordCredentials,
+        Region = region
       };
     }
 
     private static IEnumerable<VoterVote> GetDummyVotes(IList<Person> people, IList<Poll> polls)
     {
-      var rnd = new Random();
       IEnumerable<VoterVote> GenerateRandomVotes(IList<PollOption> options, Poll poll)
       {
         var optionsLength = options.Count;
@@ -105,17 +111,16 @@ namespace WebVote.Data.Extensions
         {
           Person = person,
           Poll = poll,
-          PollOption = options.ElementAt(rnd.Next(optionsLength))
+          PollOption = options.ElementAt(Rnd.Next(optionsLength))
         });
       }
 
       return polls.SelectMany(poll => GenerateRandomVotes(poll.Options, poll)).ToList();
     }
 
-    private static IList<Person> GetDummyPeople()
+    private static IList<Person> GetDummyPeople(IList<Region> regions)
     {
-      var rnd = new Random();
-      var startDate = new DateTime(1240, 1, 1);
+      var startDate = new DateTime(1940, 1, 1);
       var endDate = new DateTime(2000, 1, 1);
       var rangeDays = (endDate - startDate).Days;
 
@@ -124,7 +129,8 @@ namespace WebVote.Data.Extensions
         IndividualTaxNumber = Guid.NewGuid().ToString(),
         FullName = Guid.NewGuid().ToString(),
         Role = UserRoles.VOTER,
-        Birth = startDate.AddDays(rnd.Next(rangeDays))
+        Birth = startDate.AddDays(Rnd.Next(rangeDays)),
+        Region = regions[Rnd.Next(0, regions.Count)]
       }).ToList();
     }
 
@@ -256,6 +262,109 @@ namespace WebVote.Data.Extensions
 
       return new[] { poll1, poll2, poll3 };
 
+    }
+
+    private static IList<Region> GetRegions()
+    {
+      return new List<Region>
+      {
+        new Region
+        {
+          Name = "Cherkasy Oblast"
+        },
+        new Region
+        {
+          Name = "Chernihiv Oblast"
+        },
+        new Region
+        {
+          Name = "Chernivtsi Oblast"
+        },
+        new Region
+        {
+          Name = "Dnipropetrovsk Oblast"
+        },
+        new Region
+        {
+          Name = "Donetsk Oblast"
+        },
+        new Region
+        {
+          Name = "Ivano-Frankivsk Oblast"
+        },
+        new Region
+        {
+          Name = "Kharkiv Oblast"
+        },
+        new Region
+        {
+          Name = "Kherson Oblast"
+        },
+        new Region
+        {
+          Name = "Khmelnytskyi Oblast"
+        },
+        new Region
+        {
+          Name = "Kyiv Oblast"
+        },
+        new Region
+        {
+          Name = "Kirovohrad Oblast"
+        },
+        new Region
+        {
+          Name = "Luhansk Oblast"
+        },
+        new Region
+        {
+          Name = "Lviv Oblast"
+        },
+        new Region
+        {
+          Name = "Mykolaiv Oblast"
+        },
+        new Region
+        {
+          Name = "Odessa Oblast"
+        },
+        new Region
+        {
+          Name = "Poltava Oblast"
+        },
+        new Region
+        {
+          Name = "Rivne Oblast"
+        },
+        new Region
+        {
+          Name = "Sumy Oblast"
+        },
+        new Region
+        {
+          Name = "Ternopil Oblast"
+        },
+        new Region
+        {
+          Name = "Vinnytsia Oblast"
+        },
+        new Region
+        {
+          Name = "Volyn Oblast"
+        },
+        new Region
+        {
+          Name = "Zakarpattia Oblast"
+        },
+        new Region
+        {
+          Name = "Zaporizhzhia Oblast"
+        },
+        new Region
+        {
+          Name = "Zhytomyr Oblast"
+        }
+      };
     }
   }
 }

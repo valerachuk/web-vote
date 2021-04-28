@@ -11,6 +11,9 @@ namespace WebVote.Data.Entities
     public string Role { get; set; }
     public string IndividualTaxNumber { get; set; }
 
+    public int RegionId { get; set; }
+    public Region Region { get; set; }
+
     public PasswordCredentials PasswordCredentials { get; set; }
     public IList<VoterVote> Votes { get; set; }
   }

@@ -23,5 +23,8 @@ namespace WebVote.Business.RESTRequests
     [Required]
     [MinLength(1)]
     public string Password { get; set; }
+
+    [Required]
+    public int? RegionId { get; set; }
   }
 }
