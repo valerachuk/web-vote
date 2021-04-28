@@ -150,10 +150,10 @@ namespace WebVote.Data
         .WithMany(option => option.Votes)
         .HasForeignKey(voterVote => voterVote.PollOptionId);
 
-      //voterVoteModelBuilder
-      //  .HasOne(voterVote => voterVote.Region)
-      //  .WithMany(region => region.Votes)
-      //  .HasForeignKey(voterVote => voterVote.RegionId);
+      voterVoteModelBuilder
+        .HasOne(voterVote => voterVote.Region)
+        .WithMany(region => region.Votes)
+        .HasForeignKey(voterVote => voterVote.RegionId);
     }
 
     private static void ConfigureRegions(ModelBuilder modelBuilder)

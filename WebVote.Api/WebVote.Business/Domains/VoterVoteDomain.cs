@@ -12,16 +12,19 @@ namespace WebVote.Business.Domains
     private readonly IVoterVoteRepository _voterVoteRepository;
     private readonly IMapper _mapper;
     private readonly IPollOptionRepository _pollOptionRepository;
+    private readonly IPersonRepository _personRepository;
 
     public VoterVoteDomain(
       IVoterVoteRepository voterVoteRepository,
-      IMapper mapper,
-      IPollOptionRepository pollOptionRepository
+      IPollOptionRepository pollOptionRepository,
+      IPersonRepository personRepository,
+      IMapper mapper
       )
     {
       _pollOptionRepository = pollOptionRepository;
-      _mapper = mapper;
       _voterVoteRepository = voterVoteRepository;
+      _personRepository = personRepository;
+      _mapper = mapper;
     }
 
     public void AddVote(SubmitVoteRequest voteRequest, int personId)
@@ -41,6 +44,9 @@ namespace WebVote.Business.Domains
       {
         throw new UnprocessableEntityException();
       }
+
+      var voter = _personRepository.GetById(personId);
+      voterVote.RegionId = voter.RegionId;
 
       _voterVoteRepository.CreateVote(voterVote);
     }

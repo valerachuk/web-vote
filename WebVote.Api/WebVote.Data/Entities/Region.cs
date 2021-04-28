@@ -8,6 +8,6 @@ namespace WebVote.Data.Entities
     public string Name { get; set; }
 
     public IList<Person> Citizens { get; set; }
-    //public IList<VoterVote> Votes { get; set; }
+    public IList<VoterVote> Votes { get; set; }
   }
 }

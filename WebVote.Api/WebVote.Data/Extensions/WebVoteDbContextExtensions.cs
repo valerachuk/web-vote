@@ -111,7 +111,8 @@ namespace WebVote.Data.Extensions
         {
           Person = person,
           Poll = poll,
-          PollOption = options.ElementAt(Rnd.Next(optionsLength))
+          PollOption = options.ElementAt(Rnd.Next(optionsLength)),
+          Region = person.Region
         });
       }
 
