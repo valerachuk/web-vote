@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  allowedJwtDomain: 'https://localhost:5001',
-  baseApiUrl: 'https://localhost:5001/api/',
+  allowedJwtDomain: 'api.webvote.tk',
+  baseApiUrl: 'https://api.webvote.tk/api/',
 };

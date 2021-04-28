@@ -48,7 +48,7 @@ namespace WebVote.Api
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
-            .WithOrigins(frontOrigin);
+          .WithOrigins(frontOrigin);
         });
       });
 
@@ -85,7 +85,7 @@ namespace WebVote.Api
             ServerVersion.AutoDetect(connectionString)
           )
           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-        //.LogTo(System.Console.WriteLine)
+        // .LogTo(System.Console.WriteLine)
         );
 
       // AutoMapper
@@ -120,9 +120,8 @@ namespace WebVote.Api
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebVote.Api v1"));
+        app.UseHttpsRedirection();
       }
-
-      app.UseHttpsRedirection();
 
       app.UseRouting();
       app.UseCors();

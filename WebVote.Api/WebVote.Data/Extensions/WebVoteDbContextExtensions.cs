@@ -5,19 +5,48 @@ using System.Security.Cryptography;
 using System.Text;
 using WebVote.Constants;
 using WebVote.Data.Entities;
+using System.Diagnostics;
 
 namespace WebVote.Data.Extensions
 {
   public static class WebVoteDbContextExtensions
   {
+    public static void EnsureSeededWithLargeData(this IWebVoteDbContext webVoteDbContext, int usersCount = 100_000)
+    {
+      if (!IsDatabaseEmpty(webVoteDbContext))
+      {
+        return;
+      }
+
+      var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN);
+      var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER);
+      var voter = CreateUserWithPasswordCredentials("v", "7EAhtdHKqauCXQwU", UserRoles.VOTER);
+
+      var polls = GetDummyPolls();
+
+      webVoteDbContext.People.AddRange(new[] { admin, manager, voter });
+      webVoteDbContext.Polls.AddRange(polls);
+      webVoteDbContext.SaveChanges();
+
+      const int batchSize = 200;
+      for (var i = 0; i < usersCount / batchSize; i++)
+      {
+        var timer = Stopwatch.StartNew();
+        var people = GetSimpleDummyPeople(i, batchSize);
+        var votes = GetDummyVotes(people, polls);
+
+        webVoteDbContext.People.AddRange(people);
+        webVoteDbContext.VoterVotes.AddRange(votes);
+
+        webVoteDbContext.SaveChanges();
+        Console.WriteLine($"Writing batch {i} of {usersCount / batchSize}, batchSize: {batchSize}, time: {timer.ElapsedMilliseconds} ms");
+      }
+
+    }
+
     public static void EnsureSeeded(this IWebVoteDbContext webVoteDbContext)
     {
-      if (
-        webVoteDbContext.Polls.Any() ||
-        webVoteDbContext.PollOptions.Any() ||
-        webVoteDbContext.People.Any() ||
-        webVoteDbContext.VoterVotes.Any() ||
-        webVoteDbContext.PasswordCredentials.Any())
+      if (!IsDatabaseEmpty(webVoteDbContext))
       {
         return;
       }
@@ -35,6 +64,15 @@ namespace WebVote.Data.Extensions
       webVoteDbContext.Polls.AddRange(polls);
       webVoteDbContext.VoterVotes.AddRange(votes);
       webVoteDbContext.SaveChanges();
+    }
+
+    private static bool IsDatabaseEmpty(IWebVoteDbContext webVoteDbContext)
+    {
+      return !(webVoteDbContext.Polls.Any() ||
+             webVoteDbContext.PollOptions.Any() ||
+             webVoteDbContext.People.Any() ||
+             webVoteDbContext.VoterVotes.Any() ||
+             webVoteDbContext.PasswordCredentials.Any());
     }
 
     public static Person CreateUserWithPasswordCredentials(string login, string password, string role)
@@ -62,7 +100,7 @@ namespace WebVote.Data.Extensions
       var rnd = new Random();
       IEnumerable<VoterVote> GenerateRandomVotes(IList<PollOption> options, Poll poll)
       {
-        var optionsLength = options.Count();
+        var optionsLength = options.Count;
         return people.Select((person, idx) => new VoterVote
         {
           Person = person,
@@ -87,6 +125,17 @@ namespace WebVote.Data.Extensions
         FullName = Guid.NewGuid().ToString(),
         Role = UserRoles.VOTER,
         Birth = startDate.AddDays(rnd.Next(rangeDays))
+      }).ToList();
+    }
+
+    private static IList<Person> GetSimpleDummyPeople(int batchId, int batchSize)
+    {
+      return Enumerable.Range(0, batchSize).Select(i => new Person
+      {
+        IndividualTaxNumber = $"TaxNumber_{batchId}_{i}",
+        FullName = "FullName",
+        Role = UserRoles.VOTER,
+        Birth = new DateTime(1990, 10, 11)
       }).ToList();
     }
 
