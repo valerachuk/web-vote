@@ -87,7 +87,7 @@ namespace WebVote.Data.Extensions
       var passwordCredentials = new PasswordCredentials
       {
         Login = login,
-        Salt = new byte[0],
+        Salt = Array.Empty<byte>(),
         PasswordHash = sha256.ComputeHash(Encoding.UTF8.GetBytes(password))
       };
 
