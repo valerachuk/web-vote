@@ -105,6 +105,14 @@ namespace WebVote.Data
       pollModelBuilder
         .Property(poll => poll.Description)
         .IsRequired();
+
+      pollModelBuilder
+        .Property(poll => poll.BeginsAt)
+        .IsRequired();
+
+      pollModelBuilder
+        .Property(poll => poll.EndsAt)
+        .IsRequired();
     }
 
     private static void ConfigurePollOptions(ModelBuilder modelBuilder)

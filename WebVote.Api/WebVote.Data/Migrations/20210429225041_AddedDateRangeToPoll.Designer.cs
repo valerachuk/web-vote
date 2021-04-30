@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebVote.Data;
 
 namespace WebVote.Data.Migrations
 {
     [DbContext(typeof(WebVoteDbContext))]
-    partial class WebVoteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210429225041_AddedDateRangeToPoll")]
+    partial class AddedDateRangeToPoll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
