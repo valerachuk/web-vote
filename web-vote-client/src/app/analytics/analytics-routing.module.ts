@@ -3,6 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { PollsResultsComponent } from './components/polls-results/polls-results.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'polls-results',
+    pathMatch: 'full',
+  },
   { path: 'polls-results', component: PollsResultsComponent },
 ];
 

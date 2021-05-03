@@ -38,6 +38,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
+        path: '',
+        redirectTo: 'poll',
+        pathMatch: 'full',
+      },
+      {
         path: 'poll',
         loadChildren: () =>
           import('../poll/poll.module').then((m) => m.PollModule),
@@ -52,6 +57,11 @@ const routes: Routes = [
     },
     canActivate: [AuthGuardService],
     children: [
+      {
+        path: '',
+        redirectTo: 'user-management',
+        pathMatch: 'full',
+      },
       {
         path: 'user-management',
         loadChildren: () =>
@@ -74,6 +84,11 @@ const routes: Routes = [
     },
     canActivate: [AuthGuardService],
     children: [
+      {
+        path: '',
+        redirectTo: 'analytics',
+        pathMatch: 'full',
+      },
       {
         path: 'user-management',
         loadChildren: () =>

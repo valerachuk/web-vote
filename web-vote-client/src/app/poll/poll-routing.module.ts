@@ -9,6 +9,11 @@ import { ViewEditVotePollsListComponent } from './components/view-edit-vote-poll
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'active-polls-list',
+    pathMatch: 'full',
+  },
+  {
     path: 'create',
     component: CreateEditPollComponent,
     canActivate: [AuthGuardService],
@@ -55,13 +60,20 @@ const routes: Routes = [
   {
     path: 'view-poll/:id',
     component: ViewVotePollComponent,
+    canActivate: [AuthGuardService],
     data: {
+      allowedRoles: AUTHORIZE_ROLES.voterManagerAdmin,
       isViewForm: true,
     },
   },
   {
     path: 'vote-poll/:id',
     component: ViewVotePollComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.voterManagerAdmin,
+      isViewForm: false,
+    },
   },
 ];
 
