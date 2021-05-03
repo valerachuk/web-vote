@@ -19,7 +19,10 @@ namespace WebVote.Business
           opt => opt.MapFrom(registerUserRequest => new PasswordCredentials { Login = registerUserRequest.Login }))
         .ForMember(person => person.Role, opt => opt.MapFrom(registerUserRequest => UserRoles.VOTER));
 
-      CreateMap<Person, PersonInfoResponse>();
+      CreateMap<Person, PersonInfoResponse>()
+        .ForMember(personInfo => personInfo.Region, opt => opt.MapFrom(person => person.Region.Name))
+        .ForMember(personInfo => personInfo.Login, opt => opt.MapFrom(person => person.PasswordCredentials.Login));
+
       CreateMap<Region, RegionResponse>();
 
       CreateMap<CreatePollOptionRequest, PollOption>();

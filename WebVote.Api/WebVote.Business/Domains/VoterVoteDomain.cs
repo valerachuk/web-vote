@@ -51,7 +51,7 @@ namespace WebVote.Business.Domains
         throw new UnprocessableEntityException();
       }
 
-      var voter = _personRepository.GetById(personId);
+      var voter = _personRepository.ReadPerson(personId);
       voterVote.RegionId = voter.RegionId;
 
       _voterVoteRepository.CreateVote(voterVote);

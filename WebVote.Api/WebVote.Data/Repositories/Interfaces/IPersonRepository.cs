@@ -4,8 +4,9 @@ namespace WebVote.Data.Repositories.Interfaces
 {
   public interface IPersonRepository
   {
-    Person GetById(int id);
-    Person GetByITN(string itn);
+    Person ReadPerson(int id);
+    Person ReadPersonWithRegionAndCredentials(int id);
+    Person ReadPersonByITN(string itn);
     Person Create(Person person);
   }
 }

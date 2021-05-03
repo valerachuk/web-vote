@@ -8,9 +8,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RegionService } from './services/region.service';
 import { UserManagementService } from './services/user-management.service';
+import { ViewProfileChangePasswordComponent } from './components/view-profile-change-password/view-profile-change-password.component';
 
 @NgModule({
-  declarations: [RegisterComponent],
+  declarations: [RegisterComponent, ViewProfileChangePasswordComponent],
   providers: [RegionService, UserManagementService],
   imports: [
     CommonModule,

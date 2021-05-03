@@ -39,6 +39,17 @@
               >Archived polls</a
             >
           </li>
+
+          <li class="nav-item" [class.active]="activeUserProfileLink.isActive">
+            <a
+              class="nav-link"
+              [routerLink]="['user-management', 'profile']"
+              (click)="isMenuCollapsed = true"
+              routerLinkActive
+              #activeUserProfileLink="routerLinkActive"
+              >Profile</a
+            >
+          </li>
         </ul>
         <button class="btn btn-outline-light" appLogoutButton>Logout</button>
       </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PersonInfo } from 'src/app/interfaces/person-info.interface';
 import { environment } from 'src/environments/environment';
 import { RegisterForm } from '../../interfaces/register-form.interface';
 
@@ -18,5 +19,9 @@ export class UserManagementService {
         },
       }
     );
+  }
+
+  public getProfileInfo(): Observable<PersonInfo> {
+    return this.http.get<PersonInfo>(`${environment.baseApiUrl}person`);
   }
 }

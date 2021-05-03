@@ -20,6 +20,6 @@ namespace WebVote.Business.Domains
     }
 
     public PersonInfoResponse GetPersonInfo(int id)
-      => _mapper.Map<PersonInfoResponse>(_personRepository.GetById(id));
+      => _mapper.Map<PersonInfoResponse>(_personRepository.ReadPersonWithRegionAndCredentials(id));
   }
 }

@@ -54,7 +54,7 @@ namespace WebVote.Business.Domains
 
     public void Register(RegisterUserRequest registerUserRequest)
     {
-      var personByItn = _personRepository.GetByITN(registerUserRequest.IndividualTaxNumber);
+      var personByItn = _personRepository.ReadPersonByITN(registerUserRequest.IndividualTaxNumber);
       var credentialsByLogin = _passwordCredentialsRepository.GetByLogin(registerUserRequest.Login);
 
       string errorMessage = null;
