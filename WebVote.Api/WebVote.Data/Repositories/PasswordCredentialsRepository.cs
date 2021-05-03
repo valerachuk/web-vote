@@ -14,14 +14,22 @@ namespace WebVote.Data.Repositories
       _context = context;
     }
 
-    public PasswordCredentials GetByLoginWithPersonRole(string login) =>
+    public PasswordCredentials ReadPasswordCredentialsByPersonId(int id) =>
+      _context.PasswordCredentials.First(passwordCredentials => passwordCredentials.PersonId == id);
+
+    public PasswordCredentials ReadPasswordCredentialsWithPersonByLogin(string login) =>
       _context.PasswordCredentials
         .Include(credentials => credentials.Person)
         .FirstOrDefault(credentials => credentials.Login == login);
 
-    public PasswordCredentials GetByLogin(string login) =>
+    public PasswordCredentials ReadPasswordCredentialsByLogin(string login) =>
       _context.PasswordCredentials
         .FirstOrDefault(credentials => credentials.Login == login);
 
+    public void Update(PasswordCredentials passwordCredentials)
+    {
+      _context.PasswordCredentials.Update(passwordCredentials);
+      _context.SaveChanges();
+    }
   }
 }

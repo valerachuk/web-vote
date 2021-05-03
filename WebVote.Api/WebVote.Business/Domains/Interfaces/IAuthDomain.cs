@@ -6,5 +6,6 @@ namespace WebVote.Business.Domains.Interfaces
   {
     void Register(RegisterUserRequest registerUserRequest);
     string Login(LoginRequest loginRequest);
+    void ChangePassword(ChangePasswordRequest changePasswordRequest, int userId);
   }
 }

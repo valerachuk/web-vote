@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebVote.Api.Extensions;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.RESTRequests;
 using WebVote.Constants;
@@ -35,6 +36,13 @@ namespace WebVote.Api.Controllers
       {
         AccessToken = jwt
       });
+    }
+
+    [HttpPut]
+    public IActionResult ChangePassword(ChangePasswordRequest changePasswordRequest)
+    {
+      _authDomain.ChangePassword(changePasswordRequest, User.GetId());
+      return Ok();
     }
   }
 }

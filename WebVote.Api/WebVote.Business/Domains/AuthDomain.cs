@@ -52,10 +52,24 @@ namespace WebVote.Business.Domains
       return _sha256.ComputeHash(salt.Concat(Encoding.UTF8.GetBytes(password)).ToArray());
     }
 
+    private bool CheckPassword(PasswordCredentials passwordCredentials, string password)
+    {
+      var passwordHashFromLogin = ComputePasswordHash(passwordCredentials.Salt, password);
+      return passwordHashFromLogin.SequenceEqual(passwordCredentials.PasswordHash);
+    }
+
+    private void CompleteCredentials(PasswordCredentials passwordCredentials, string password)
+    {
+      var salt = CreateSalt();
+      var passwordHash = ComputePasswordHash(salt, password);
+      passwordCredentials.Salt = salt;
+      passwordCredentials.PasswordHash = passwordHash;
+    }
+
     public void Register(RegisterUserRequest registerUserRequest)
     {
       var personByItn = _personRepository.ReadPersonByITN(registerUserRequest.IndividualTaxNumber);
-      var credentialsByLogin = _passwordCredentialsRepository.GetByLogin(registerUserRequest.Login);
+      var credentialsByLogin = _passwordCredentialsRepository.ReadPasswordCredentialsByLogin(registerUserRequest.Login);
 
       string errorMessage = null;
 
@@ -77,34 +91,40 @@ namespace WebVote.Business.Domains
         throw new ConflictException(errorMessage);
       }
 
-      var salt = CreateSalt();
-      var passwordHash = ComputePasswordHash(salt, registerUserRequest.Password);
-
       var newPersonWithCredentials = _mapper.Map<Person>(registerUserRequest);
-      var passwordCredentials = newPersonWithCredentials.PasswordCredentials;
-      passwordCredentials.Salt = salt;
-      passwordCredentials.PasswordHash = passwordHash;
+      CompleteCredentials(newPersonWithCredentials.PasswordCredentials, registerUserRequest.Password);
 
       _personRepository.Create(newPersonWithCredentials);
     }
 
     public string Login(LoginRequest loginRequest)
     {
-      var passwordCredentials = _passwordCredentialsRepository.GetByLoginWithPersonRole(loginRequest.Login);
+      var passwordCredentials = _passwordCredentialsRepository.ReadPasswordCredentialsWithPersonByLogin(loginRequest.Login);
 
       if (passwordCredentials == null)
       {
         throw new UnprocessableEntityException("Invalid login");
       }
 
-      var passwordHashFromLogin = ComputePasswordHash(passwordCredentials.Salt, loginRequest.Password);
-
-      if (passwordHashFromLogin.SequenceEqual(passwordCredentials.PasswordHash))
+      if (CheckPassword(passwordCredentials, loginRequest.Password))
       {
         return GenerateJWT(passwordCredentials.PersonId, passwordCredentials.Person.Role);
       }
 
       throw new UnprocessableEntityException("Invalid password");
+    }
+
+    public void ChangePassword(ChangePasswordRequest changePasswordRequest, int userId)
+    {
+      var passwordCredentials = _passwordCredentialsRepository.ReadPasswordCredentialsByPersonId(userId);
+
+      if (!CheckPassword(passwordCredentials, changePasswordRequest.OldPassword))
+      {
+        throw new UnprocessableEntityException("Invalid password");
+      }
+
+      CompleteCredentials(passwordCredentials, changePasswordRequest.NewPassword);
+      _passwordCredentialsRepository.Update(passwordCredentials);
     }
 
     private string GenerateJWT(int userId, string role)
