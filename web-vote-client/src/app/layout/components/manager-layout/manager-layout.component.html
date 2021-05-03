@@ -25,15 +25,28 @@
           </li>
           <li
             class="nav-item"
-            [class.active]="activeViewPollsListLink.isActive"
+            [class.active]="activeActivePollsListLink.isActive"
           >
             <a
               class="nav-link"
-              [routerLink]="['poll', 'vote-polls-list']"
+              [routerLink]="['poll', 'active-polls-list']"
               (click)="isMenuCollapsed = true"
               routerLinkActive
-              #activeViewPollsListLink="routerLinkActive"
+              #activeActivePollsListLink="routerLinkActive"
               >Active polls</a
+            >
+          </li>
+          <li
+            class="nav-item"
+            [class.active]="activeArchivedPollsListLink.isActive"
+          >
+            <a
+              class="nav-link"
+              [routerLink]="['poll', 'archived-polls-list']"
+              (click)="isMenuCollapsed = true"
+              routerLinkActive
+              #activeArchivedPollsListLink="routerLinkActive"
+              >Archived polls</a
             >
           </li>
         </ul>

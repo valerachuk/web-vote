@@ -1,6 +1,7 @@
 <div class="card" *ngIf="regions$ | async as regions; else loadingPollsTitles">
   <div class="card-body">
     <h2 class="card-title text-center">Register voter</h2>
+    <hr />
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="fullNameInput">Full name</label>

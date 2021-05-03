@@ -6,6 +6,7 @@ import { GlobalToastService } from 'src/app/core/services/global-toast.service';
 import { PollInfo } from '../../../interfaces/poll-info.interface';
 import { PollService } from '../../../core/services/poll.service';
 import { PollsViewType } from '../../../constants/polls-view-type.enum';
+import { DEFAULT_DATE_TIME_FORMAT } from 'src/app/constants/misc.constant';
 
 @Component({
   selector: 'app-view-edit-vote-polls-list',
@@ -24,17 +25,23 @@ export class ViewEditVotePollsListComponent implements OnInit {
   public pollToDelete: PollInfo | null = null;
   public pollsViewType: PollsViewType | null = null;
   public readonly PollsViewType = PollsViewType;
+  public readonly defaultDateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
 
   public ngOnInit(): void {
     this.pollsViewType = this.route.snapshot.data
       .pollsViewType as PollsViewType;
 
-    if (this.pollsViewType === PollsViewType.Vote) {
-      this.pollsInfo$ = this.pollSerivce.getVotablePollsInfo();
-      return;
+    switch (this.pollsViewType) {
+      case PollsViewType.Pending:
+        this.pollsInfo$ = this.pollSerivce.getPendingPolls();
+        break;
+      case PollsViewType.Active:
+        this.pollsInfo$ = this.pollSerivce.getActivePolls();
+        break;
+      case PollsViewType.Archive:
+        this.pollsInfo$ = this.pollSerivce.getArchivedPolls();
+        break;
     }
-
-    this.pollsInfo$ = this.pollSerivce.getPollsInfo();
   }
 
   public openDeletePollModal(

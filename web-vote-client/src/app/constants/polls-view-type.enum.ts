@@ -1,5 +1,5 @@
 export enum PollsViewType {
-  Vote,
-  View,
-  Edit,
+  Pending,
+  Active,
+  Archive,
 }

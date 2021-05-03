@@ -13,17 +13,20 @@ namespace WebVote.Business.Domains
     private readonly IMapper _mapper;
     private readonly IPollOptionRepository _pollOptionRepository;
     private readonly IPersonRepository _personRepository;
+    private readonly IDateProviderDomain _dateProvider;
 
     public VoterVoteDomain(
       IVoterVoteRepository voterVoteRepository,
       IPollOptionRepository pollOptionRepository,
       IPersonRepository personRepository,
+      IDateProviderDomain dateProvider,
       IMapper mapper
       )
     {
       _pollOptionRepository = pollOptionRepository;
       _voterVoteRepository = voterVoteRepository;
       _personRepository = personRepository;
+      _dateProvider = dateProvider;
       _mapper = mapper;
     }
 
@@ -32,9 +35,12 @@ namespace WebVote.Business.Domains
       var voterVote = _mapper.Map<VoterVote>(voteRequest);
       voterVote.PersonId = personId;
 
-      var pollOption = _pollOptionRepository.ReadById(voterVote.PollOptionId);
+      var pollOption = _pollOptionRepository.ReadOptionWithPoll(voterVote.PollOptionId);
+      var poll = pollOption.Poll;
+      voterVote.PollId = poll.Id;
 
-      if (pollOption == null || pollOption.PollId != voterVote.PollId)
+      var now = _dateProvider.UtcNow;
+      if (poll.BeginsAt > now || poll.EndsAt < now)
       {
         throw new UnprocessableEntityException();
       }

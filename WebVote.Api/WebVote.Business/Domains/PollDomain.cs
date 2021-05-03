@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using WebVote.Business.Domains.Interfaces;
+using WebVote.Business.Exceptions;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses.Poll;
 using WebVote.Data.Entities;
@@ -15,16 +16,19 @@ namespace WebVote.Business.Domains
     private readonly IPollRepository _pollRepository;
     private readonly IPollOptionRepository _pollOptionRepository;
     private readonly IMapper _mapper;
+    private readonly IDateProviderDomain _dateProvider;
 
     public PollDomain(
       IPollRepository pollRepository,
       IPollOptionRepository pollOptionRepository,
-      IMapper mapper
+      IMapper mapper,
+      IDateProviderDomain dateProvider
       )
     {
       _mapper = mapper;
       _pollRepository = pollRepository;
       _pollOptionRepository = pollOptionRepository;
+      _dateProvider = dateProvider;
     }
 
     public void CreatePool(CreatePollRequest createPollRequest)
@@ -35,18 +39,30 @@ namespace WebVote.Business.Domains
 
     public void DeletePoll(int id)
     {
-      _pollRepository.Remove(new Poll { Id = id });
+      var poll = _pollRepository.ReadPoll(id);
+      if (poll.BeginsAt <= _dateProvider.UtcNow)
+      {
+        throw new ForbiddenException("You can delete only pending poll");
+      }
+
+      _pollRepository.Delete(new Poll { Id = id });
     }
 
-    public IList<PollInfoResponse> GetPolls()
+    public IList<PollInfoResponse> GetPendingPolls()
     {
-      var polls = _pollRepository.ReadPolls();
+      var polls = _pollRepository.ReadPendingPolls(_dateProvider.UtcNow);
       return _mapper.Map<IList<PollInfoResponse>>(polls);
     }
 
-    public IList<PollInfoResponse> GetVotablePolls(int userId)
+    public IList<PollInfoResponse> GetActivePolls(int userId)
     {
-      var polls = _pollRepository.ReadVotablePolls(userId);
+      var polls = _pollRepository.ReadActivePolls(_dateProvider.UtcNow, userId);
+      return _mapper.Map<IList<PollInfoResponse>>(polls);
+    }
+
+    public IList<PollInfoResponse> GetArchivedPolls(int userId)
+    {
+      var polls = _pollRepository.ReadArchivedPolls(_dateProvider.UtcNow, userId);
       return _mapper.Map<IList<PollInfoResponse>>(polls);
     }
 
@@ -54,6 +70,18 @@ namespace WebVote.Business.Domains
     {
       var polls = _pollRepository.ReadPolls();
       return _mapper.Map<IList<PollTitleResponse>>(polls);
+    }
+
+    public PollWithOptionsResponse GetPollWithOptionsOrderedByOptionTitleForVoter(int id)
+    {
+      var poll = _pollRepository.ReadPollWithOptions(id);
+      if (poll.BeginsAt > _dateProvider.UtcNow)
+      {
+        throw new ForbiddenException();
+      }
+
+      poll.Options = poll.Options.OrderBy(pollOption => pollOption.Title).ToList();
+      return _mapper.Map<PollWithOptionsResponse>(poll);
     }
 
     public PollWithOptionsResponse GetPollWithOptionsOrderedByOptionTitle(int id)
@@ -67,6 +95,12 @@ namespace WebVote.Business.Domains
     {
       Debug.Assert(updatePollRequest.Id != null, "updatePollRequest.Id != null");
       var pollId = (int)updatePollRequest.Id;
+
+      var pollToCheck = _pollRepository.ReadPoll(pollId);
+      if (pollToCheck.BeginsAt <= _dateProvider.UtcNow)
+      {
+        throw new ForbiddenException("You can update only pending poll");
+      }
 
       var pollOptionsIdsInDb = _pollRepository.ReadOptionsIdsOfPoll(pollId);
 

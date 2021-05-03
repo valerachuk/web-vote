@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Api.Extensions;
 using WebVote.Business.Domains.Interfaces;
+using WebVote.Business.Exceptions;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Constants;
 
@@ -25,14 +27,30 @@ namespace WebVote.Api.Controllers
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult CreatePoll([FromBody] CreatePollRequest createPollRequest)
     {
+      // To fluent validation in future
+      if (createPollRequest.EndsAt <= createPollRequest.BeginsAt ||
+        createPollRequest.BeginsAt - DateTimeOffset.Now < TimeSpan.FromHours(1)
+        )
+      {
+        throw new BadRequestException();
+      }
+
       _pollDomain.CreatePool(createPollRequest);
       return Ok();
     }
 
     [HttpPut]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
-    public IActionResult CreatePoll([FromBody] UpdatePollRequest updatePollRequest)
+    public IActionResult UpdatePoll([FromBody] UpdatePollRequest updatePollRequest)
     {
+      // To fluent validation in future
+      if (updatePollRequest.EndsAt <= updatePollRequest.BeginsAt ||
+          updatePollRequest.BeginsAt - DateTimeOffset.Now < TimeSpan.FromHours(1)
+      )
+      {
+        throw new BadRequestException("Invalid model (time)");
+      }
+
       _pollDomain.SmartUpdatePoll(updatePollRequest);
       return Ok();
     }
@@ -45,13 +63,6 @@ namespace WebVote.Api.Controllers
       return Ok();
     }
 
-    [HttpGet("polls-info")]
-    [Authorize(Roles = AuthorizeRoles.ADMIN)]
-    public IActionResult GetPollsInfo()
-    {
-      return Ok(_pollDomain.GetPolls());
-    }
-
     [HttpGet("polls-titles")]
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult GetPollsTitles()
@@ -59,16 +70,36 @@ namespace WebVote.Api.Controllers
       return Ok(_pollDomain.GetPollsTitles());
     }
 
-    [HttpGet("votable-polls-info")]
-    public IActionResult GetVotablePollsInfo()
-    {
-      return Ok(_pollDomain.GetVotablePolls(User.GetId()));
-    }
-
-    [HttpGet("{id}")]
+    [HttpGet("{id}/as-admin")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult GetPollWithOptions([FromRoute] int id)
     {
       return Ok(_pollDomain.GetPollWithOptionsOrderedByOptionTitle(id));
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetPollWithOptionsForVoter([FromRoute] int id)
+    {
+      return Ok(_pollDomain.GetPollWithOptionsOrderedByOptionTitleForVoter(id));
+    }
+
+    [HttpGet("pending")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
+    public IActionResult GetPendingPolls()
+    {
+      return Ok(_pollDomain.GetPendingPolls());
+    }
+
+    [HttpGet("active")]
+    public IActionResult GetActivePolls()
+    {
+      return Ok(_pollDomain.GetActivePolls(User.GetId()));
+    }
+
+    [HttpGet("archived")]
+    public IActionResult GetArchivedPolls()
+    {
+      return Ok(_pollDomain.GetArchivedPolls(User.GetId()));
     }
 
   }

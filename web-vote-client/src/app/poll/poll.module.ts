@@ -7,14 +7,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewEditVotePollsListComponent } from './components/view-edit-vote-polls-list/view-edit-vote-polls-list.component';
-import { PollVoteFormComponent } from './components/poll-vote-form/poll-vote-form.component';
+import { ViewVotePollComponent } from './components/view-vote-poll/view-vote-poll.component';
 import { VoteService } from './services/vote.service';
+import { DateHelperService } from './services/date-helper.service';
+import { CreateEditPollValidatorService } from './services/create-edit-poll-validator.service';
 
 @NgModule({
   declarations: [
     CreateEditPollComponent,
     ViewEditVotePollsListComponent,
-    PollVoteFormComponent,
+    ViewVotePollComponent,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,6 @@ import { VoteService } from './services/vote.service';
     SharedModule,
     NgbModule,
   ],
-  providers: [VoteService],
+  providers: [VoteService, DateHelperService, CreateEditPollValidatorService],
 })
 export class PollModule {}

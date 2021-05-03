@@ -3,6 +3,7 @@
     <h2 class="card-title text-center">
       {{ isEditForm ? "Edit poll" : "Create poll" }}
     </h2>
+    <hr />
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="poolTitleInput">Poll title</label>
@@ -31,6 +32,142 @@
         ></textarea>
         <div class="invalid-feedback">Poll description should not be empty</div>
       </div>
+
+      <div class="form-group">
+        <app-date-time-picker
+          title="Choose the start date and time (UTC)"
+          [formControl]="beginsAtControl"
+          #dateTimeBegin
+        ></app-date-time-picker>
+
+        <label for="birthInput">Begins at</label>
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">UTC</span>
+          </div>
+          <input
+            type="text"
+            class="form-control cursor-pointer"
+            readonly
+            placeholder="Click to open calendar"
+            [value]="
+              beginsAtControl.valid
+                ? (dateHelper.dateTimeToISO8601UTC(beginsAtControl.value)
+                  | date: defaultDateTimeFormat:'utc')
+                : ''
+            "
+            [class.is-invalid]="
+              formHelper.isInvalidAndTouched(beginsAtControl) ||
+              form.hasError('startsLessThanInOneHour')
+            "
+            (click)="dateTimeBegin.openModal()"
+          />
+
+          <div
+            class="invalid-feedback"
+            *ngIf="beginsAtControl.hasError('required')"
+          >
+            Start date is required
+          </div>
+
+          <div
+            class="invalid-feedback"
+            *ngIf="beginsAtControl.hasError('dateTimeInvalid')"
+          >
+            Start date is invalid
+          </div>
+        </div>
+
+        <div class="input-group mt-3" *ngIf="beginsAtControl.valid">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{ timeZone }}</span>
+          </div>
+          <input
+            type="text"
+            class="form-control cursor-pointer"
+            readonly
+            (click)="dateTimeBegin.openModal()"
+            [class.is-invalid]="form.hasError('startsLessThanInOneHour')"
+            [value]="
+              dateHelper.dateTimeToISO8601UTC(beginsAtControl.value)
+                | date: defaultDateTimeFormat
+            "
+          />
+
+          <div class="invalid-feedback">
+            Start date should be at least in one hour from now
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <app-date-time-picker
+          title="Choose the start date and time (UTC)"
+          [formControl]="endsAtControl"
+          #dateTimeEnd
+        ></app-date-time-picker>
+
+        <label for="birthInput">Ends at</label>
+
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">UTC</span>
+          </div>
+          <input
+            type="text"
+            class="form-control cursor-pointer"
+            readonly
+            placeholder="Click to open calendar"
+            [value]="
+              endsAtControl.valid
+                ? (dateHelper.dateTimeToISO8601UTC(endsAtControl.value)
+                  | date: defaultDateTimeFormat:'utc')
+                : ''
+            "
+            [class.is-invalid]="
+              formHelper.isInvalidAndTouched(endsAtControl) ||
+              form.hasError('endDateNotGreaterStartDate')
+            "
+            (click)="dateTimeEnd.openModal()"
+          />
+
+          <div
+            class="invalid-feedback"
+            *ngIf="endsAtControl.hasError('required')"
+          >
+            End date is required
+          </div>
+
+          <div
+            class="invalid-feedback"
+            *ngIf="endsAtControl.hasError('dateTimeInvalid')"
+          >
+            End date is invalid
+          </div>
+        </div>
+
+        <div class="input-group mt-3" *ngIf="endsAtControl.valid">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{ timeZone }}</span>
+          </div>
+          <input
+            type="text"
+            class="form-control cursor-pointer"
+            readonly
+            (click)="dateTimeEnd.openModal()"
+            [class.is-invalid]="form.hasError('endDateNotGreaterStartDate')"
+            [value]="
+              dateHelper.dateTimeToISO8601UTC(endsAtControl.value)
+                | date: defaultDateTimeFormat
+            "
+          />
+          <div class="invalid-feedback">
+            End date should be greater than start date
+          </div>
+        </div>
+      </div>
+
       <hr />
 
       <ngb-alert [dismissible]="false" type="info">

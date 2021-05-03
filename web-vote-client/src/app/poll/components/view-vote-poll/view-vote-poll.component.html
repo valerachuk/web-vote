@@ -2,6 +2,10 @@
   <div class="card">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="card-body">
+        <h2 class="card-title text-center">
+          {{ isViewForm ? "Viewing archived poll" : "Please, vote" }}
+        </h2>
+        <hr />
         <h3 class="card-title">{{ poll.title }}</h3>
         <p class="card-text">{{ poll.description }}</p>
       </div>
@@ -35,6 +39,7 @@
               "
             >
               <input
+                [disabled]="isViewForm"
                 ngbButton
                 type="radio"
                 [value]="pollOption.id"
@@ -45,7 +50,7 @@
           </li>
         </div>
       </ul>
-      <div class="card-body d-flex justify-content-center">
+      <div class="card-body d-flex justify-content-center" *ngIf="!isViewForm">
         <button
           href="#"
           class="card-link btn btn-primary btn-lg"

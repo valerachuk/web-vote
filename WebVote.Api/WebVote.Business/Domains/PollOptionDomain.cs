@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using WebVote.Business.Domains.Interfaces;
-using WebVote.Business.RESTResponses;
 using WebVote.Business.RESTResponses.PollOption;
 using WebVote.Data.Repositories.Interfaces;
 

@@ -57,7 +57,7 @@ namespace WebVote.Data.Extensions
       var regions = GetRegions();
       var people = GetDummyPeople(regions);
       var polls = GetDummyPolls();
-      var votes = GetDummyVotes(people, polls);
+      var votes = GetDummyVotes(people, new[] { polls[0], polls[1] });
 
       var admin = CreateUserWithPasswordCredentials("a", "3ZcKTC3gq33SPWTF", UserRoles.ADMIN, regions[0]);
       var manager = CreateUserWithPasswordCredentials("m", "VeaNCa2FZCgB7cQq", UserRoles.MANAGER, regions[1]);
@@ -152,6 +152,8 @@ namespace WebVote.Data.Extensions
       {
         Title = "Choose your favorite SpongeBob SquarePants character",
         Description = "SpongeBob SquarePants (also simply referred to as SpongeBob) is an American animated comedy television series created by marine science educator and animator Stephen Hillenburg for Nickelodeon. The series chronicles the adventures and endeavors of the title character and his aquatic friends in the fictional underwater city of Bikini Bottom. The fifth-longest-running American animated series, its popularity has made it a media franchise. It is the highest rated series to air on Nickelodeon and it is the most distributed property from ViacomCBS Networks International. The media franchise has generated more than $13 billion in merchandising revenue for Nickelodeon.[6][needs update]",
+        BeginsAt = DateTimeOffset.Now.AddYears(-2),
+        EndsAt = DateTimeOffset.Now.AddYears(-2).AddDays(7),
         Options = new[]
         {
           new PollOption
@@ -180,13 +182,14 @@ namespace WebVote.Data.Extensions
             Description = "Sheldon Plankton (voiced by Mr. Lawrence) and Karen Plankton (voiced by Jill Talley) are the owners of the Chum Bucket, an unsuccessful restaurant located across the street from the Krusty Krab. Their business is a commercial failure because they sell mostly inedible foods made from chum. Plankton is a small planktonic copepod[21] and the self-proclaimed archenemy of Mr. Krabs. His ultimate goal is to steal Krabs' secret formula for Krabby Patties, run the Krusty Krab out of business and take over the oceanic world but never permanently succeeds due to either SpongeBob and/or Krabs' efforts, his own incompetence and childish nature, or his own small size (except, temporarily, in The SpongeBob SquarePants Movie). He is a skilled inventor and possesses a Napoleon complex due to his short stature.[22] Karen is Plankton's own invention, a waterproof supercomputer[23] who is more competent that Plankton, being the brains behind most of his evil plans to steal Krabs' secret recipe.[24] She is married to Plankton and usually takes residence in the Chum Bucket laboratory."
           },
         },
-
       };
 
       var poll2 = new Poll
       {
         Title = "Голосование за любимого главного персонажа из «Лунтик и его друзья»",
         Description = "«Лунтик и его друзья» (ранее назывался «Приключения Лунтика и его друзей») — российский мультсериал, ориентированный на семейную и детскую аудиторию. Транслируется на телевидении с 1 сентября 2006 года по настоящее время. Ключевой темой стали приключения маленького пушистого существа Лунтика — космического пришельца, который родился на Луне.",
+        BeginsAt = DateTimeOffset.Now,
+        EndsAt = DateTimeOffset.Now.AddYears(30),
         Options = new[]
         {
           new PollOption
@@ -246,6 +249,8 @@ namespace WebVote.Data.Extensions
       {
         Title = "Референдум щодо поправок до Конституції України",
         Description = "Ви схвалюєте зміни до Конституції України?",
+        BeginsAt = DateTimeOffset.Now.AddYears(30),
+        EndsAt = DateTimeOffset.Now.AddYears(30).AddDays(2),
         Options = new[]
         {
           new PollOption

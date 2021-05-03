@@ -4,7 +4,7 @@ import { AUTHORIZE_ROLES } from '../constants/authorize-roles.constant';
 import { PollsViewType } from '../constants/polls-view-type.enum';
 import { AuthGuardService } from '../core/services/auth-guard.service';
 import { CreateEditPollComponent } from './components/create-edit-poll/create-edit-poll.component';
-import { PollVoteFormComponent } from './components/poll-vote-form/poll-vote-form.component';
+import { ViewVotePollComponent } from './components/view-vote-poll/view-vote-poll.component';
 import { ViewEditVotePollsListComponent } from './components/view-edit-vote-polls-list/view-edit-vote-polls-list.component';
 
 const routes: Routes = [
@@ -17,7 +17,34 @@ const routes: Routes = [
     },
   },
   {
-    path: 'edit/:id',
+    path: 'pending-polls-list',
+    component: ViewEditVotePollsListComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.admin,
+      pollsViewType: PollsViewType.Pending,
+    },
+  },
+  {
+    path: 'active-polls-list',
+    component: ViewEditVotePollsListComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.voterManagerAdmin,
+      pollsViewType: PollsViewType.Active,
+    },
+  },
+  {
+    path: 'archived-polls-list',
+    component: ViewEditVotePollsListComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.voterManagerAdmin,
+      pollsViewType: PollsViewType.Archive,
+    },
+  },
+  {
+    path: 'edit-poll/:id',
     component: CreateEditPollComponent,
     canActivate: [AuthGuardService],
     data: {
@@ -26,26 +53,15 @@ const routes: Routes = [
     },
   },
   {
-    path: 'edit-polls-list',
-    component: ViewEditVotePollsListComponent,
-    canActivate: [AuthGuardService],
+    path: 'view-poll/:id',
+    component: ViewVotePollComponent,
     data: {
-      allowedRoles: AUTHORIZE_ROLES.admin,
-      pollsViewType: PollsViewType.Edit,
+      isViewForm: true,
     },
   },
   {
-    path: 'vote-polls-list',
-    component: ViewEditVotePollsListComponent,
-    canActivate: [AuthGuardService],
-    data: {
-      allowedRoles: AUTHORIZE_ROLES.voterManagerAdmin,
-      pollsViewType: PollsViewType.Vote,
-    },
-  },
-  {
-    path: 'vote/:id',
-    component: PollVoteFormComponent,
+    path: 'vote-poll/:id',
+    component: ViewVotePollComponent,
   },
 ];
 

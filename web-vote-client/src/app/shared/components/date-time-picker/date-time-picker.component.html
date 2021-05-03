@@ -1,0 +1,27 @@
+<ng-template #dateTimePickerModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div
+        class="d-flex flex-sm-row flex-column justify-content-around align-items-center"
+      >
+        <div class="mb-sm-0 mb-4">
+          <ngb-datepicker [formControl]="dateControl"></ngb-datepicker>
+        </div>
+        <div>
+          <ngb-timepicker [formControl]="timeControl"></ngb-timepicker>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" (click)="modal.close()">
+      Ok
+    </button>
+  </div>
+</ng-template>

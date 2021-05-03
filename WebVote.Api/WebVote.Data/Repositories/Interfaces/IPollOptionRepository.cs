@@ -9,7 +9,7 @@ namespace WebVote.Data.Repositories.Interfaces
     void CreateRange(IEnumerable<PollOption> pollOptions);
     void UpdateRange(IEnumerable<PollOption> pollOptions);
     void RemoveRange(IEnumerable<PollOption> pollOptions);
-    PollOption ReadById(int id);
+    PollOption ReadOptionWithPoll(int id);
     IList<ValueTuple<PollOption, int>> ReadPollResults(int pollId);
   }
 }

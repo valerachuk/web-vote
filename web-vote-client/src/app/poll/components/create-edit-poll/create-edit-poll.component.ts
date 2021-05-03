@@ -10,6 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { FormHelperService } from 'src/app/core/services/form-helper.service';
 import { GlobalToastService } from 'src/app/core/services/global-toast.service';
 import { PollService } from '../../../core/services/poll.service';
+import { DateHelperService } from '../../services/date-helper.service';
+import { map } from 'rxjs/operators';
+import { Poll } from 'src/app/interfaces/poll.interface';
+import { CreateEditPollValidatorService } from '../../services/create-edit-poll-validator.service';
+import { DEFAULT_DATE_TIME_FORMAT } from 'src/app/constants/misc.constant';
 
 @Component({
   selector: 'app-create-edit-poll',
@@ -19,40 +24,27 @@ import { PollService } from '../../../core/services/poll.service';
 export class CreateEditPollComponent implements OnInit {
   constructor(
     public readonly formHelper: FormHelperService,
+    public readonly dateHelper: DateHelperService,
     private readonly pollService: PollService,
     private readonly toastService: GlobalToastService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly myDateValidator: CreateEditPollValidatorService
   ) {}
 
   public readonly form = new FormGroup({
     id: new FormControl(null),
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
+    beginsAt: new FormControl(null, Validators.required),
+    endsAt: new FormControl(null, Validators.required),
     options: new FormArray([], Validators.required),
   });
 
   public isEditForm: boolean | null = null;
 
-  public ngOnInit(): void {
-    this.isEditForm = this.route.snapshot.data.isEditForm;
+  public readonly timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (!this.isEditForm) {
-      this.addOption();
-      return;
-    }
-
-    this.form.disable();
-    const pollId = +this.route.snapshot.params.id;
-
-    this.pollService.getPollWithOptions(pollId).subscribe((poll) => {
-      poll.options.forEach(() => {
-        this.addOption();
-      });
-      this.form.patchValue(poll);
-
-      this.form.enable();
-    });
-  }
+  public readonly defaultDateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
 
   public get titleControl(): FormControl {
     return this.form.get('title') as FormControl;
@@ -64,6 +56,49 @@ export class CreateEditPollComponent implements OnInit {
 
   public get optionsArray(): FormArray {
     return this.form.get('options') as FormArray;
+  }
+
+  public get beginsAtControl(): FormControl {
+    return this.form.get('beginsAt') as FormControl;
+  }
+
+  public get endsAtControl(): FormControl {
+    return this.form.get('endsAt') as FormControl;
+  }
+
+  public ngOnInit(): void {
+    this.form.setValidators([
+      this.myDateValidator.endDateGreaterStartDate.bind(this.myDateValidator),
+      this.myDateValidator.startsAtLeastInOneHour.bind(this.myDateValidator),
+    ]);
+
+    this.isEditForm = this.route.snapshot.data.isEditForm;
+
+    if (!this.isEditForm) {
+      this.addOption();
+      return;
+    }
+
+    this.form.disable();
+    const pollId = +this.route.snapshot.params.id;
+
+    this.pollService
+      .getPollWithOptionsAsAdmin(pollId)
+      .pipe(
+        map((pollDateISO) => ({
+          ...pollDateISO,
+          beginsAt: this.dateHelper.iso8601ToDateTimeUTC(pollDateISO.beginsAt),
+          endsAt: this.dateHelper.iso8601ToDateTimeUTC(pollDateISO.endsAt),
+        }))
+      )
+      .subscribe((poll) => {
+        poll.options.forEach(() => {
+          this.addOption();
+        });
+        this.form.patchValue(poll);
+
+        this.form.enable();
+      });
   }
 
   public getOptionTitle(group: AbstractControl): FormControl {
@@ -94,13 +129,18 @@ export class CreateEditPollComponent implements OnInit {
       return;
     }
 
+    const poll = this.form.value;
     this.form.disable();
+    const pollFormWithISO8601Date: Poll = {
+      ...poll,
+      beginsAt: this.dateHelper.dateTimeToISO8601UTC(poll.beginsAt),
+      endsAt: this.dateHelper.dateTimeToISO8601UTC(poll.endsAt),
+    };
 
     if (this.isEditForm) {
-      console.log(this.form.value);
-      this.pollService.updatePoll(this.form.value).subscribe(() => {
+      this.pollService.updatePoll(pollFormWithISO8601Date).subscribe(() => {
         this.toastService.showSuccess(
-          `Poll "${this.titleControl.value}" successfuly edited`
+          `Poll "${poll.title}" successfuly edited`
         );
         this.form.enable();
       });
@@ -108,14 +148,12 @@ export class CreateEditPollComponent implements OnInit {
       return;
     }
 
-    this.pollService.createPoll(this.form.value).subscribe(() => {
-      this.toastService.showSuccess(
-        `Poll "${this.titleControl.value}" successfuly created`
-      );
+    this.pollService.createPoll(pollFormWithISO8601Date).subscribe(() => {
+      this.toastService.showSuccess(`Poll "${poll.title}" successfuly created`);
+      this.form.enable();
       this.form.reset();
       this.optionsArray.clear();
       this.addOption();
-      this.form.enable();
     });
   }
 }

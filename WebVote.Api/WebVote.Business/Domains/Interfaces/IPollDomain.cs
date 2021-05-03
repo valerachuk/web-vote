@@ -8,9 +8,11 @@ namespace WebVote.Business.Domains.Interfaces
   {
     void CreatePool(CreatePollRequest createPollRequest);
     void DeletePoll(int id);
-    IList<PollInfoResponse> GetPolls();
-    IList<PollInfoResponse> GetVotablePolls(int userId);
+    IList<PollInfoResponse> GetPendingPolls();
+    IList<PollInfoResponse> GetActivePolls(int userId);
+    IList<PollInfoResponse> GetArchivedPolls(int userId);
     IList<PollTitleResponse> GetPollsTitles();
+    PollWithOptionsResponse GetPollWithOptionsOrderedByOptionTitleForVoter(int id);
     PollWithOptionsResponse GetPollWithOptionsOrderedByOptionTitle(int id);
     void SmartUpdatePoll(UpdatePollRequest updatePollRequest);
   }

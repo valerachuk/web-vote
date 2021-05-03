@@ -85,7 +85,7 @@ namespace WebVote.Api
             ServerVersion.AutoDetect(connectionString)
           )
           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-        // .LogTo(System.Console.WriteLine)
+         .LogTo(System.Console.WriteLine)
         );
 
       // AutoMapper
@@ -99,6 +99,7 @@ namespace WebVote.Api
       services.AddTransient<IVoterVoteDomain, VoterVoteDomain>();
       services.AddTransient<IPollOptionDomain, PollOptionDomain>();
       services.AddTransient<IRegionDomain, RegionDomain>();
+      services.AddTransient<IDateProviderDomain, DateProviderDomain>();
 
       // Repositories
       services.AddTransient<IPersonRepository, PersonRepository>();

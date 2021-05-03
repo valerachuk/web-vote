@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
 
@@ -35,9 +36,11 @@ namespace WebVote.Data.Repositories
       _context.SaveChanges();
     }
 
-    public PollOption ReadById(int id)
+    public PollOption ReadOptionWithPoll(int id)
     {
-      return _context.PollOptions.FirstOrDefault(pollOption => pollOption.Id == id);
+      return _context.PollOptions
+        .Include(pollOption => pollOption.Poll)
+        .First(pollOption => pollOption.Id == id);
     }
 
     public IList<ValueTuple<PollOption, int>> ReadPollResults(int pollId)

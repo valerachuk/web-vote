@@ -28,16 +28,22 @@
   <div class="card mb-3" *ngFor="let pollInfo of pollsInfo">
     <div class="card-body">
       <h3>
-        <span *ngIf="pollsViewType === PollsViewType.Edit">
+        <span *ngIf="pollsViewType === PollsViewType.Pending">
           {{ pollInfo.id }})
         </span>
         {{ pollInfo.title }}
       </h3>
       <p class="card-text">{{ pollInfo.description }}</p>
-      <ng-template [ngIf]="pollsViewType === PollsViewType.Edit">
+      <p class="card-text text-right">
+        Begins at: {{ pollInfo.beginsAt | date: defaultDateTimeFormat }}
+        <br />
+        Ends at: {{ pollInfo.endsAt | date: defaultDateTimeFormat }}
+      </p>
+      <hr />
+      <ng-template [ngIf]="pollsViewType === PollsViewType.Pending">
         <a
           class="card-link btn btn-warning"
-          [routerLink]="['..', 'edit', pollInfo.id]"
+          [routerLink]="['..', 'edit-poll', pollInfo.id]"
           >Edit</a
         >
         <button
@@ -47,16 +53,25 @@
           Delete
         </button>
       </ng-template>
-      <ng-template [ngIf]="pollsViewType === PollsViewType.Vote">
+      <ng-template [ngIf]="pollsViewType === PollsViewType.Active">
         <a
           class="card-link btn btn-primary"
-          [routerLink]="['..', 'vote', pollInfo.id]"
+          [routerLink]="['..', 'vote-poll', pollInfo.id]"
           >Vote</a
         >
       </ng-template>
-      <!-- <button class="card-link btn btn-success">View</button> -->
+      <ng-template [ngIf]="pollsViewType === PollsViewType.Archive">
+        <a
+          class="card-link btn btn-primary"
+          [routerLink]="['..', 'view-poll', pollInfo.id]"
+          >View</a
+        >
+      </ng-template>
     </div>
   </div>
+
+  <!-- make ngIf from form error instead of array length -->
+
   <h2 class="text-center" *ngIf="pollsInfo.length === 0">No polls here...</h2>
 </div>
 <ng-template #loading>

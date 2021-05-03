@@ -40,6 +40,12 @@ namespace WebVote.Api.Middlewares
         _ => HttpStatusCode.InternalServerError
       });
 
+      if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
+      {
+        await response.WriteAsync("InternalServerError");
+        return;
+      }
+
       await response.WriteAsync(exception.Message);
     }
   }
