@@ -48,6 +48,7 @@ namespace WebVote.Api
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
+            .WithExposedHeaders("content-disposition")
           .WithOrigins(frontOrigin);
         });
       });
@@ -97,7 +98,7 @@ namespace WebVote.Api
       services.AddTransient<IPersonDomain, PersonDomain>();
       services.AddTransient<IPollDomain, PollDomain>();
       services.AddTransient<IVoterVoteDomain, VoterVoteDomain>();
-      services.AddTransient<IPollOptionDomain, PollOptionDomain>();
+      services.AddTransient<IAnalyticDomain, AnalyticDomain>();
       services.AddTransient<IRegionDomain, RegionDomain>();
       services.AddTransient<IDateProviderDomain, DateProviderDomain>();
 
@@ -108,6 +109,7 @@ namespace WebVote.Api
       services.AddTransient<IPollOptionRepository, PollOptionRepository>();
       services.AddTransient<IVoterVoteRepository, VoterVoteRepository>();
       services.AddTransient<IRegionRepository, RegionRepository>();
+      services.AddTransient<IAnalyticRepository, AnalyticRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

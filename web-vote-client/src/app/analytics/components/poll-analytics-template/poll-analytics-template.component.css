@@ -1,0 +1,4 @@
+.hide-next-if-empty:empty + * {
+  display: none;
+  /* background-color: red; */
+}

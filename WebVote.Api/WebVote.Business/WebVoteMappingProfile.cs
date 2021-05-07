@@ -3,6 +3,7 @@ using AutoMapper;
 using WebVote.Business.RESTRequests;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses;
+using WebVote.Business.RESTResponses.Analytic;
 using WebVote.Business.RESTResponses.Poll;
 using WebVote.Business.RESTResponses.PollOption;
 using WebVote.Constants;
@@ -38,10 +39,15 @@ namespace WebVote.Business
 
       CreateMap<SubmitVoteRequest, VoterVote>();
 
-      CreateMap<PollOption, PollOptionVotesResponse>();
-      CreateMap<ValueTuple<PollOption, int>, PollOptionVotesResponse>()
-        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<PollOptionVotesResponse>(kvp.Item1))
-        .ForMember(response => response.VotesCount, opt => opt.MapFrom(kvp => kvp.Item2));
+      CreateMap<PollOption, NumberOfVotesPerOptionResponse>();
+      CreateMap<ValueTuple<PollOption, int>, NumberOfVotesPerOptionResponse>()
+        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<NumberOfVotesPerOptionResponse>(kvp.Item1))
+        .ForMember(response => response.VotesNumber, opt => opt.MapFrom(kvp => kvp.Item2));
+
+      CreateMap<PollOption, PercentageOfVotesPerOptionResponse>();
+      CreateMap<ValueTuple<PollOption, decimal>, PercentageOfVotesPerOptionResponse>()
+        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<PercentageOfVotesPerOptionResponse>(kvp.Item1))
+        .ForMember(response => response.Percentage, opt => opt.MapFrom(kvp => kvp.Item2));
     }
   }
 }

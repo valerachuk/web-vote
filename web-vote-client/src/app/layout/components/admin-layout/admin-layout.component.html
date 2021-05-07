@@ -76,15 +76,24 @@
             </ul>
           </li>
 
-          <li class="nav-item" [class.active]="activePollsResultsLink.isActive">
+          <li ngbDropdown class="nav-item">
             <a
+              ngbDropdownToggle
               class="nav-link"
-              [routerLink]="['analytics', 'polls-results']"
-              (click)="isMenuCollapsed = true"
-              routerLinkActive
-              #activePollsResultsLink="routerLinkActive"
-              >Polls results</a
+              [class.active]="activeCountOfVotesPerOptionLink.isActive"
+              >Analytics</a
             >
+            <ul ngbDropdownMenu>
+              <button
+                ngbDropdownItem
+                [routerLink]="['analytics', 'number-of-votes-per-option']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeCountOfVotesPerOptionLink="routerLinkActive"
+              >
+                Count of votes per option
+              </button>
+            </ul>
           </li>
 
           <li class="nav-item" [class.active]="activeUserProfileLink.isActive">

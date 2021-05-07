@@ -1,0 +1,16 @@
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th scope="col" *ngFor="let headerColumn of header">
+        {{ headerColumn.columnName }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of value">
+      <td *ngFor="let headerColumn of header">
+        {{ row[headerColumn.key] }}
+      </td>
+    </tr>
+  </tbody>
+</table>

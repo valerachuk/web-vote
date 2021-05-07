@@ -2,14 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AnalyticsRoutingModule } from './analytics-routing.module';
-import { PollsResultsComponent } from './components/polls-results/polls-results.component';
 import { AnalyticsService } from './services/analytics.service';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { FileDownloaderService } from './services/file-downloader.service';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { PollAnalyticsTemplateComponent } from './components/poll-analytics-template/poll-analytics-template.component';
+import { NumberOfVotesPerOptionComponent } from './components/number-of-votes-per-option/number-of-votes-per-option.component';
 
 @NgModule({
-  declarations: [PollsResultsComponent, PollsResultsComponent],
+  declarations: [
+    DataTableComponent,
+    PollAnalyticsTemplateComponent,
+    NumberOfVotesPerOptionComponent,
+  ],
   imports: [CommonModule, AnalyticsRoutingModule, SharedModule, FormsModule],
-  providers: [AnalyticsService],
+  providers: [AnalyticsService, FileDownloaderService],
 })
 export class AnalyticsModule {}

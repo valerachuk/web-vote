@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PollsResultsComponent } from './components/polls-results/polls-results.component';
+import { NumberOfVotesPerOptionComponent } from './components/number-of-votes-per-option/number-of-votes-per-option.component';
 
 const routes: Routes = [
   {
@@ -8,7 +8,10 @@ const routes: Routes = [
     redirectTo: 'polls-results',
     pathMatch: 'full',
   },
-  { path: 'polls-results', component: PollsResultsComponent },
+  {
+    path: 'number-of-votes-per-option',
+    component: NumberOfVotesPerOptionComponent,
+  },
 ];
 
 @NgModule({

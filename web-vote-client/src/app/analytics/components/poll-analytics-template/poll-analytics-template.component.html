@@ -3,7 +3,13 @@
   *ngIf="pollsTitles$ | async as pollsTitles; else loadingPollsTitles"
 >
   <div class="card-body">
-    <h2 class="card-title text-center">Polls results</h2>
+    <h2 class="card-title text-center">
+      <ng-content select="[slot-title]"></ng-content>
+    </h2>
+    <hr />
+    <p class="hide-next-if-empty">
+      <ng-content select="[slot-description]"></ng-content>
+    </p>
     <hr />
     <div *ngIf="pollsTitles.length !== 0; else noPolls">
       <div class="form-group">
@@ -14,38 +20,33 @@
           </option>
         </select>
       </div>
-      <button
-        class="btn btn-primary"
-        (click)="onResultRequested()"
-        [disabled]="isResultsLoading"
-      >
-        Request results
-      </button>
+      <div class="btn-group">
+        <button
+          class="btn btn-primary"
+          (click)="onResultRequested()"
+          [disabled]="isResultsLoading"
+        >
+          Request results
+        </button>
+        <button
+          class="btn btn-success"
+          (click)="onCsvRequested()"
+          [disabled]="isCsvLoading"
+        >
+          Download CSV
+        </button>
+      </div>
     </div>
 
     <ng-template #noPolls>
       <p class="card-text">You have to create at least one poll</p>
     </ng-template>
 
-    <table
-      class="table table-striped mt-4"
+    <app-data-table
       *ngIf="pollsOptionsVotes$ | async as pollsOptionsVotes"
-    >
-      <thead>
-        <tr>
-          <th scope="col">Id</th>
-          <th scope="col">Option</th>
-          <th scope="col">Votes count</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pollOptionVote of pollsOptionsVotes">
-          <th scope="row">{{ pollOptionVote.id | number }}</th>
-          <td>{{ pollOptionVote.title }}</td>
-          <td>{{ pollOptionVote.votesCount | number }}</td>
-        </tr>
-      </tbody>
-    </table>
+      [header]="tableHeader"
+      [value]="pollsOptionsVotes"
+    ></app-data-table>
     <app-spinner *ngIf="isResultsLoading"></app-spinner>
   </div>
 </div>
