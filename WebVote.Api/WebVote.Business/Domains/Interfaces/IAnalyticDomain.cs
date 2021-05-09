@@ -5,9 +5,7 @@ namespace WebVote.Business.Domains.Interfaces
 {
   public interface IAnalyticDomain
   {
-    IEnumerable<NumberOfVotesPerOptionResponse> GetNumberOfVotesPerOption(int pollId);
-    IEnumerable<PercentOfVotesPerOptionResponse> GetPercentOfVotesPerOption(int pollId);
-    (byte[], string) GetNumberOfVotesPerOptionCSV(int pollId);
-    (byte[], string) GetPercentOfVotesPerOptionCSV(int pollId);
+    IEnumerable<VotesPerOptionResponse> GetVotesPerOption(int pollId);
+    (byte[], string) GetVotesPerOptionCSV(int pollId);
   }
 }

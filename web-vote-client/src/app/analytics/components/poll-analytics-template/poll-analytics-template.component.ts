@@ -2,7 +2,6 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { PollService } from 'src/app/core/services/poll.service';
-import { PollOptionVotesNumber } from 'src/app/interfaces/poll-option-votes-count.interface';
 import { PollTitle } from 'src/app/interfaces/poll-title.interface';
 import { DataTableHeader } from '../data-table/data-table-types';
 

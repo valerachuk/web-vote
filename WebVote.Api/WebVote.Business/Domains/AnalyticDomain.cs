@@ -31,36 +31,22 @@ namespace WebVote.Business.Domains
       _dateProvider = dateProvider;
     }
 
-    public IEnumerable<NumberOfVotesPerOptionResponse> GetNumberOfVotesPerOption(int pollId)
-    {
-      var pollOptionVotes = _analyticRepository.ReadNumberOfVotesPerOption(pollId);
-      return _mapper.Map<IEnumerable<NumberOfVotesPerOptionResponse>>(pollOptionVotes);
-    }
-
-    public IEnumerable<PercentOfVotesPerOptionResponse> GetPercentOfVotesPerOption(int pollId)
+    public IEnumerable<VotesPerOptionResponse> GetVotesPerOption(int pollId)
     {
       var pollOptionVotes = _analyticRepository.ReadNumberOfVotesPerOption(pollId);
 
       var votesCount = pollOptionVotes.Select(tuple => tuple.Item2).Sum();
-      var pollOptionVotesPercent = pollOptionVotes.Select(tuple => ValueTuple.Create(tuple.Item1, votesCount != 0 ? 1m * tuple.Item2 / votesCount : 0m));
+      var pollOptionVotesPercent = pollOptionVotes
+        .Select(tuple => ValueTuple.Create(tuple.Item1, tuple.Item2, votesCount != 0 ? 1m * tuple.Item2 / votesCount : 0m));
 
-      return _mapper.Map<IEnumerable<PercentOfVotesPerOptionResponse>>(pollOptionVotesPercent);
+      return _mapper.Map<IEnumerable<VotesPerOptionResponse>>(pollOptionVotesPercent);
     }
 
-    public (byte[], string) GetNumberOfVotesPerOptionCSV(int pollId)
+    public (byte[], string) GetVotesPerOptionCSV(int pollId)
     {
-      var fileName = CreatePollFileNameCSV(pollId, "number of votes per option");
+      var fileName = CreatePollFileNameCSV(pollId, "votes per option");
 
-      var numberOfVotesPerOption = GetNumberOfVotesPerOption(pollId);
-
-      return (ToCSV(numberOfVotesPerOption), fileName);
-    }
-
-    public (byte[], string) GetPercentOfVotesPerOptionCSV(int pollId)
-    {
-      var fileName = CreatePollFileNameCSV(pollId, "percent of votes per option");
-
-      var percentOfVotesPerOption = GetPercentOfVotesPerOption(pollId);
+      var percentOfVotesPerOption = GetVotesPerOption(pollId);
 
       return (ToCSV(percentOfVotesPerOption), fileName);
     }

@@ -39,15 +39,11 @@ namespace WebVote.Business
 
       CreateMap<SubmitVoteRequest, VoterVote>();
 
-      CreateMap<PollOption, NumberOfVotesPerOptionResponse>();
-      CreateMap<ValueTuple<PollOption, int>, NumberOfVotesPerOptionResponse>()
-        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<NumberOfVotesPerOptionResponse>(kvp.Item1))
-        .ForMember(response => response.VotesNumber, opt => opt.MapFrom(kvp => kvp.Item2));
-
-      CreateMap<PollOption, PercentOfVotesPerOptionResponse>();
-      CreateMap<ValueTuple<PollOption, decimal>, PercentOfVotesPerOptionResponse>()
-        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<PercentOfVotesPerOptionResponse>(kvp.Item1))
-        .ForMember(response => response.Percent, opt => opt.MapFrom(kvp => kvp.Item2));
+      CreateMap<PollOption, VotesPerOptionResponse>();
+      CreateMap<ValueTuple<PollOption, int, decimal>, VotesPerOptionResponse>()
+        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<VotesPerOptionResponse>(kvp.Item1))
+        .ForMember(response => response.Percent, opt => opt.MapFrom(kvp => kvp.Item3))
+        .ForMember(response => response.Count, opt => opt.MapFrom(kvp => kvp.Item2));
     }
   }
 }

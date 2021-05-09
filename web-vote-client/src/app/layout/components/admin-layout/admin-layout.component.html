@@ -80,30 +80,18 @@
             <a
               ngbDropdownToggle
               class="nav-link"
-              [class.active]="
-                activeNumberOfVotesPerOptionLink.isActive ||
-                activePercentOfVotesPerOptionLink.isActive
-              "
+              [class.active]="activeVotesPerOptionLink.isActive"
               >Analytics</a
             >
             <div ngbDropdownMenu>
               <button
                 ngbDropdownItem
-                [routerLink]="['analytics', 'number-of-votes-per-option']"
+                [routerLink]="['analytics', 'votes-per-option']"
                 (click)="isMenuCollapsed = true"
                 routerLinkActive="active"
-                #activeNumberOfVotesPerOptionLink="routerLinkActive"
+                #activeVotesPerOptionLink="routerLinkActive"
               >
-                Number of votes per option
-              </button>
-              <button
-                ngbDropdownItem
-                [routerLink]="['analytics', 'percent-of-votes-per-option']"
-                (click)="isMenuCollapsed = true"
-                routerLinkActive="active"
-                #activePercentOfVotesPerOptionLink="routerLinkActive"
-              >
-                Percent of votes per option
+                Votes per option
               </button>
             </div>
           </li>

@@ -21,5 +21,16 @@ namespace WebVote.Data.Repositories
         .Select(pollOption => ValueTuple.Create(pollOption, pollOption.Votes.Count))
         .ToList();
     }
+
+    public IList<ValueTuple<Region, int, int>> ReadNumberOfVotesPerRegion(int pollId)
+    {
+      return _context.Regions.Select(region =>
+          ValueTuple.Create(
+            region,
+            region.Citizens.Count,
+            region.Votes.Count(vote => vote.PollId == pollId)
+          ))
+        .ToList();
+    }
   }
 }

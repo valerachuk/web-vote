@@ -4,36 +4,34 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { DataTableHeader } from '../data-table/data-table-types';
 
 @Component({
-  selector: 'app-number-of-votes-per-option',
-  templateUrl: './number-of-votes-per-option.component.html',
-  styleUrls: ['./number-of-votes-per-option.component.css'],
+  selector: 'app-votes-per-option',
+  templateUrl: './votes-per-option.component.html',
+  styleUrls: ['./votes-per-option.component.css'],
 })
-export class NumberOfVotesPerOptionComponent {
+export class VotesPerOptionComponent {
   constructor(public readonly anayticsService: AnalyticsService) {}
 
   public readonly tableHeader: DataTableHeader = [
-    {
-      columnName: 'Option id',
-      key: 'id',
-    },
     {
       columnName: 'Option name',
       key: 'title',
     },
     {
-      columnName: 'Votes number',
-      key: 'votesNumber',
+      columnName: 'Votes count',
+      key: 'count',
+    },
+    {
+      columnName: 'Votes percent',
+      key: 'percent',
     },
   ];
 
   public get analyticsRequester(): (pollId: number) => Observable<any> {
-    return this.anayticsService.getCountOfVotesPerOption.bind(
-      this.anayticsService
-    );
+    return this.anayticsService.getVotesPerOption.bind(this.anayticsService);
   }
 
   public get csvAnalyticsDownloader(): (pollId: number) => Observable<any> {
-    return this.anayticsService.downloadCountOfVotesPerOptionCsv.bind(
+    return this.anayticsService.downloadVotesPerOptionCsv.bind(
       this.anayticsService
     );
   }
