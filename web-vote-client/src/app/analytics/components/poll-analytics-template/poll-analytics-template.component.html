@@ -43,7 +43,7 @@
     </ng-template>
 
     <app-data-table
-      *ngIf="pollsOptionsVotes$ | async as pollsOptionsVotes"
+      *ngIf="pollAnalyticData$ | async as pollsOptionsVotes"
       [header]="tableHeader"
       [value]="pollsOptionsVotes"
     ></app-data-table>

@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { PollService } from 'src/app/core/services/poll.service';
-import { PollOptionVote } from 'src/app/interfaces/poll-option-vote.interface';
+import { PollOptionVotesNumber } from 'src/app/interfaces/poll-option-votes-count.interface';
 import { PollTitle } from 'src/app/interfaces/poll-title.interface';
 import { DataTableHeader } from '../data-table/data-table-types';
 
@@ -31,7 +31,7 @@ export class PollAnalyticsTemplateComponent implements OnInit {
   private pollSelect: ElementRef<HTMLSelectElement> | null = null;
 
   public pollsTitles$: Observable<Array<PollTitle>> | null = null;
-  public pollsOptionsVotes$: Observable<Array<PollOptionVote>> | null = null;
+  public pollAnalyticData$: Observable<Array<any>> | null = null;
   public isResultsLoading = false;
   public isCsvLoading = false;
 
@@ -42,7 +42,7 @@ export class PollAnalyticsTemplateComponent implements OnInit {
   public onResultRequested(): void {
     this.isResultsLoading = true;
     const pollId = this.pollSelect!.nativeElement.value;
-    this.pollsOptionsVotes$ = this.analyticsRequester!(+pollId).pipe(
+    this.pollAnalyticData$ = this.analyticsRequester!(+pollId).pipe(
       tap(() => {
         this.isResultsLoading = false;
       })

@@ -37,14 +37,14 @@ namespace WebVote.Business.Domains
       return _mapper.Map<IEnumerable<NumberOfVotesPerOptionResponse>>(pollOptionVotes);
     }
 
-    public IEnumerable<PercentageOfVotesPerOptionResponse> GetPercentageOfVotesPerOption(int pollId)
+    public IEnumerable<PercentOfVotesPerOptionResponse> GetPercentOfVotesPerOption(int pollId)
     {
       var pollOptionVotes = _analyticRepository.ReadNumberOfVotesPerOption(pollId);
 
       var votesCount = pollOptionVotes.Select(tuple => tuple.Item2).Sum();
-      var pollOptionVotesPercentage = pollOptionVotes.Select(tuple => ValueTuple.Create(tuple.Item1, votesCount != 0 ? 1m * tuple.Item2 / votesCount : 0m));
+      var pollOptionVotesPercent = pollOptionVotes.Select(tuple => ValueTuple.Create(tuple.Item1, votesCount != 0 ? 1m * tuple.Item2 / votesCount : 0m));
 
-      return _mapper.Map<IEnumerable<PercentageOfVotesPerOptionResponse>>(pollOptionVotesPercentage);
+      return _mapper.Map<IEnumerable<PercentOfVotesPerOptionResponse>>(pollOptionVotesPercent);
     }
 
     public (byte[], string) GetNumberOfVotesPerOptionCSV(int pollId)
@@ -56,13 +56,13 @@ namespace WebVote.Business.Domains
       return (ToCSV(numberOfVotesPerOption), fileName);
     }
 
-    public (byte[], string) GetPercentageOfVotesPerOptionCSV(int pollId)
+    public (byte[], string) GetPercentOfVotesPerOptionCSV(int pollId)
     {
-      var fileName = CreatePollFileNameCSV(pollId, "percentage of votes per option");
+      var fileName = CreatePollFileNameCSV(pollId, "percent of votes per option");
 
-      var percentageOfVotesPerOption = GetPercentageOfVotesPerOption(pollId);
+      var percentOfVotesPerOption = GetPercentOfVotesPerOption(pollId);
 
-      return (ToCSV(percentageOfVotesPerOption), fileName);
+      return (ToCSV(percentOfVotesPerOption), fileName);
     }
 
     private static byte[] ToCSV<T>(IEnumerable<T> records)

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Business.Domains.Interfaces;
 using WebVote.Constants;
@@ -31,17 +30,16 @@ namespace WebVote.Api.Controllers
       return File(contents, "text/csv", fileName);
     }
 
-    [HttpGet("percentage-of-votes-per-option/{pollId}")]
-    public IActionResult GetPercentageOfVotesPerOption([FromRoute] int pollId)
+    [HttpGet("percent-of-votes-per-option/{pollId}")]
+    public IActionResult GetPercentOfVotesPerOption([FromRoute] int pollId)
     {
-      return Ok(_analyticDomain.GetPercentageOfVotesPerOption(pollId));
+      return Ok(_analyticDomain.GetPercentOfVotesPerOption(pollId));
     }
 
-    [HttpGet("percentage-of-votes-per-option/{pollId}/csv")]
-    public IActionResult GetPercentageOfVotesPerOptionCSV([FromRoute] int pollId)
+    [HttpGet("percent-of-votes-per-option/{pollId}/csv")]
+    public IActionResult GetPercentOfVotesPerOptionCSV([FromRoute] int pollId)
     {
-      throw new NotImplementedException();
-      var (contents, fileName) = _analyticDomain.GetNumberOfVotesPerOptionCSV(pollId);
+      var (contents, fileName) = _analyticDomain.GetPercentOfVotesPerOptionCSV(pollId);
       return File(contents, "text/csv", fileName);
     }
   }

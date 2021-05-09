@@ -1,9 +1,9 @@
 ﻿namespace WebVote.Business.RESTResponses.Analytic
 {
-  public class PercentageOfVotesPerOptionResponse
+  public class PercentOfVotesPerOptionResponse
   {
     public int Id { get; set; }
     public string Title { get; set; }
-    public decimal Percentage { get; set; }
+    public decimal Percent { get; set; }
   }
 }

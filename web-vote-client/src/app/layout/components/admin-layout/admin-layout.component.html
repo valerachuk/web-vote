@@ -45,7 +45,7 @@
               "
               >Polls</a
             >
-            <ul ngbDropdownMenu>
+            <div ngbDropdownMenu>
               <button
                 ngbDropdownItem
                 [routerLink]="['poll', 'pending-polls-list']"
@@ -73,27 +73,39 @@
               >
                 Archived polls
               </button>
-            </ul>
+            </div>
           </li>
 
           <li ngbDropdown class="nav-item">
             <a
               ngbDropdownToggle
               class="nav-link"
-              [class.active]="activeCountOfVotesPerOptionLink.isActive"
+              [class.active]="
+                activeNumberOfVotesPerOptionLink.isActive ||
+                activePercentOfVotesPerOptionLink.isActive
+              "
               >Analytics</a
             >
-            <ul ngbDropdownMenu>
+            <div ngbDropdownMenu>
               <button
                 ngbDropdownItem
                 [routerLink]="['analytics', 'number-of-votes-per-option']"
                 (click)="isMenuCollapsed = true"
                 routerLinkActive="active"
-                #activeCountOfVotesPerOptionLink="routerLinkActive"
+                #activeNumberOfVotesPerOptionLink="routerLinkActive"
               >
-                Count of votes per option
+                Number of votes per option
               </button>
-            </ul>
+              <button
+                ngbDropdownItem
+                [routerLink]="['analytics', 'percent-of-votes-per-option']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activePercentOfVotesPerOptionLink="routerLinkActive"
+              >
+                Percent of votes per option
+              </button>
+            </div>
           </li>
 
           <li class="nav-item" [class.active]="activeUserProfileLink.isActive">
