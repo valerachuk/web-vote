@@ -1,4 +1,4 @@
-export interface PollOptionVotes {
+export interface VotesPerPollOption {
   id: number;
   title: string;
   count: number;

@@ -29,5 +29,18 @@ namespace WebVote.Api.Controllers
       var (contents, fileName) = _analyticDomain.GetVotesPerOptionCSV(pollId);
       return File(contents, "text/csv", fileName);
     }
+
+    [HttpGet("votes-per-region/{pollId}")]
+    public IActionResult GetVotesPerRegion([FromRoute] int pollId)
+    {
+      return Ok(_analyticDomain.GetVotesPerRegion(pollId));
+    }
+
+    [HttpGet("votes-per-region/{pollId}/csv")]
+    public IActionResult GetVotesPerRegionCSV([FromRoute] int pollId)
+    {
+      var (contents, fileName) = _analyticDomain.GetVotesPerRegionCSV(pollId);
+      return File(contents, "text/csv", fileName);
+    }
   }
 }

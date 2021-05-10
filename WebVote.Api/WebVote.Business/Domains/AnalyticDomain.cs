@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -33,22 +32,55 @@ namespace WebVote.Business.Domains
 
     public IEnumerable<VotesPerOptionResponse> GetVotesPerOption(int pollId)
     {
-      var pollOptionVotes = _analyticRepository.ReadNumberOfVotesPerOption(pollId);
+      var pollOptionVotesCountDtos = _analyticRepository.ReadNumberOfVotesPerOption(pollId);
 
-      var votesCount = pollOptionVotes.Select(tuple => tuple.Item2).Sum();
-      var pollOptionVotesPercent = pollOptionVotes
-        .Select(tuple => ValueTuple.Create(tuple.Item1, tuple.Item2, votesCount != 0 ? 1m * tuple.Item2 / votesCount : 0m));
+      var votesCount = pollOptionVotesCountDtos.Sum(pollOptionVotesCount => pollOptionVotesCount.VotesCount);
 
-      return _mapper.Map<IEnumerable<VotesPerOptionResponse>>(pollOptionVotesPercent);
+      return pollOptionVotesCountDtos.Select(pollOptionVotesCountDTO =>
+      {
+        var votesPerOption = _mapper.Map<VotesPerOptionResponse>(pollOptionVotesCountDTO);
+        votesPerOption.Percent = votesCount != 0 ? 1m * pollOptionVotesCountDTO.VotesCount / votesCount : 0m;
+
+        return votesPerOption;
+      });
     }
 
     public (byte[], string) GetVotesPerOptionCSV(int pollId)
     {
       var fileName = CreatePollFileNameCSV(pollId, "votes per option");
 
-      var percentOfVotesPerOption = GetVotesPerOption(pollId);
+      var votesPerOption = GetVotesPerOption(pollId);
 
-      return (ToCSV(percentOfVotesPerOption), fileName);
+      return (ToCSV(votesPerOption), fileName);
+    }
+
+    public IEnumerable<VotesPerRegionResponse> GetVotesPerRegion(int pollId)
+    {
+      var regionsCitizensVotesCountDtos = _analyticRepository.ReadNumberOfVotesPerRegion(pollId);
+
+      var votesCount = regionsCitizensVotesCountDtos.Sum(regionCitizensVotesCountDto => regionCitizensVotesCountDto.VotesCount);
+
+      return regionsCitizensVotesCountDtos.Select(regionCitizensVotesCountDto =>
+      {
+        var votesPerRegion = _mapper.Map<VotesPerRegionResponse>(regionCitizensVotesCountDto);
+
+        votesPerRegion.VotersActivityPercent = regionCitizensVotesCountDto.CitizensCount != 0
+          ? 1m * regionCitizensVotesCountDto.VotesCount / regionCitizensVotesCountDto.CitizensCount
+          : 0m;
+
+        votesPerRegion.VotesPercent = votesCount != 0 ? 1m * regionCitizensVotesCountDto.VotesCount / votesCount : 0m;
+
+        return votesPerRegion;
+      }).OrderByDescending(votesPerRegion => votesPerRegion.VotersActivityPercent);
+    }
+
+    public (byte[], string) GetVotesPerRegionCSV(int pollId)
+    {
+      var fileName = CreatePollFileNameCSV(pollId, "votes per region");
+
+      var votesPerRegion = GetVotesPerRegion(pollId);
+
+      return (ToCSV(votesPerRegion), fileName);
     }
 
     private static byte[] ToCSV<T>(IEnumerable<T> records)

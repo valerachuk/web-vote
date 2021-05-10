@@ -7,5 +7,8 @@ namespace WebVote.Business.Domains.Interfaces
   {
     IEnumerable<VotesPerOptionResponse> GetVotesPerOption(int pollId);
     (byte[], string) GetVotesPerOptionCSV(int pollId);
+
+    IEnumerable<VotesPerRegionResponse> GetVotesPerRegion(int pollId);
+    (byte[], string) GetVotesPerRegionCSV(int pollId);
   }
 }

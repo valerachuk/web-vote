@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VotesPerOptionComponent } from './components/votes-per-option/votes-per-option.component';
+import { VotesPerRegionComponent } from './components/votes-per-region/votes-per-region.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'votes-per-option',
     component: VotesPerOptionComponent,
+  },
+  {
+    path: 'votes-per-region',
+    component: VotesPerRegionComponent,
   },
 ];
 

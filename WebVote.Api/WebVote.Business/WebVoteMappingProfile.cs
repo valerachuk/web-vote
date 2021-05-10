@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using WebVote.Business.RESTRequests;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses;
@@ -7,6 +6,7 @@ using WebVote.Business.RESTResponses.Analytic;
 using WebVote.Business.RESTResponses.Poll;
 using WebVote.Business.RESTResponses.PollOption;
 using WebVote.Constants;
+using WebVote.Data.DTO;
 using WebVote.Data.Entities;
 
 namespace WebVote.Business
@@ -40,10 +40,26 @@ namespace WebVote.Business
       CreateMap<SubmitVoteRequest, VoterVote>();
 
       CreateMap<PollOption, VotesPerOptionResponse>();
-      CreateMap<ValueTuple<PollOption, int, decimal>, VotesPerOptionResponse>()
-        .ConstructUsing((kvp, ctx) => ctx.Mapper.Map<VotesPerOptionResponse>(kvp.Item1))
-        .ForMember(response => response.Percent, opt => opt.MapFrom(kvp => kvp.Item3))
-        .ForMember(response => response.Count, opt => opt.MapFrom(kvp => kvp.Item2));
+      CreateMap<PollOptionVotesCountDTO, VotesPerOptionResponse>()
+        .ConstructUsing((pollOptionVotesCountDTO, ctx) =>
+        {
+          var response = ctx.Mapper.Map<VotesPerOptionResponse>(pollOptionVotesCountDTO.PollOption);
+          response.Count = pollOptionVotesCountDTO.VotesCount;
+
+          return response;
+        });
+
+      CreateMap<Region, VotesPerRegionResponse>();
+      CreateMap<RegionCitizensVotesCountDTO, VotesPerRegionResponse>()
+        .ConstructUsing((regionsCitizensVotesCountDTO, ctx) =>
+        {
+          var response = ctx.Mapper.Map<VotesPerRegionResponse>(regionsCitizensVotesCountDTO.Region);
+          response.CitizensCount = regionsCitizensVotesCountDTO.CitizensCount;
+          response.VotesCount = regionsCitizensVotesCountDTO.VotesCount;
+
+          return response;
+        });
+
     }
   }
 }

@@ -80,7 +80,10 @@
             <a
               ngbDropdownToggle
               class="nav-link"
-              [class.active]="activeVotesPerOptionLink.isActive"
+              [class.active]="
+                activeVotesPerOptionLink.isActive ||
+                activeVotesPerRegionLink.isActive
+              "
               >Analytics</a
             >
             <div ngbDropdownMenu>
@@ -92,6 +95,15 @@
                 #activeVotesPerOptionLink="routerLinkActive"
               >
                 Votes per option
+              </button>
+              <button
+                ngbDropdownItem
+                [routerLink]="['analytics', 'votes-per-region']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeVotesPerRegionLink="routerLinkActive"
+              >
+                Votes per region
               </button>
             </div>
           </li>

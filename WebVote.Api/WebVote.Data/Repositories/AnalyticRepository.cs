@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using WebVote.Data.Entities;
+using WebVote.Data.DTO;
 using WebVote.Data.Repositories.Interfaces;
 
 namespace WebVote.Data.Repositories
@@ -14,22 +13,27 @@ namespace WebVote.Data.Repositories
       _context = context;
     }
 
-    public IList<ValueTuple<PollOption, int>> ReadNumberOfVotesPerOption(int pollId)
+    public IList<PollOptionVotesCountDTO> ReadNumberOfVotesPerOption(int pollId)
     {
       return _context.PollOptions.Where(pollOption => pollOption.PollId == pollId)
         .OrderByDescending(pollOption => pollOption.Votes.Count)
-        .Select(pollOption => ValueTuple.Create(pollOption, pollOption.Votes.Count))
-        .ToList();
+        .Select(pollOption => new PollOptionVotesCountDTO
+        {
+          PollOption = pollOption,
+          VotesCount = pollOption.Votes.Count
+        })
+    .ToList();
     }
 
-    public IList<ValueTuple<Region, int, int>> ReadNumberOfVotesPerRegion(int pollId)
+    public IList<RegionCitizensVotesCountDTO> ReadNumberOfVotesPerRegion(int pollId)
     {
       return _context.Regions.Select(region =>
-          ValueTuple.Create(
-            region,
-            region.Citizens.Count,
-            region.Votes.Count(vote => vote.PollId == pollId)
-          ))
+          new RegionCitizensVotesCountDTO
+          {
+            Region = region,
+            CitizensCount = region.Citizens.Count,
+            VotesCount = region.Votes.Count(vote => vote.PollId == pollId)
+          })
         .ToList();
     }
   }
