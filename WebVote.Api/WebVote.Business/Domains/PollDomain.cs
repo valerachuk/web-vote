@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
@@ -6,6 +7,7 @@ using WebVote.Business.Domains.Interfaces;
 using WebVote.Business.Exceptions;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses.Poll;
+using WebVote.Data;
 using WebVote.Data.Entities;
 using WebVote.Data.Repositories.Interfaces;
 
@@ -17,18 +19,21 @@ namespace WebVote.Business.Domains
     private readonly IPollOptionRepository _pollOptionRepository;
     private readonly IMapper _mapper;
     private readonly IDateProviderDomain _dateProvider;
+    private readonly IWebVoteDbContext _webVoteDbContext;
 
     public PollDomain(
       IPollRepository pollRepository,
       IPollOptionRepository pollOptionRepository,
       IMapper mapper,
-      IDateProviderDomain dateProvider
+      IDateProviderDomain dateProvider,
+      IWebVoteDbContext webVoteDbContext
       )
     {
       _mapper = mapper;
       _pollRepository = pollRepository;
       _pollOptionRepository = pollOptionRepository;
       _dateProvider = dateProvider;
+      _webVoteDbContext = webVoteDbContext;
     }
 
     public void CreatePool(CreatePollRequest createPollRequest)
@@ -93,6 +98,8 @@ namespace WebVote.Business.Domains
 
     public void SmartUpdatePoll(UpdatePollRequest updatePollRequest)
     {
+      using var transaction = _webVoteDbContext.BeginTransaction(IsolationLevel.Serializable);
+
       Debug.Assert(updatePollRequest.Id != null, "updatePollRequest.Id != null");
       var pollId = (int)updatePollRequest.Id;
 
@@ -128,6 +135,8 @@ namespace WebVote.Business.Domains
       _pollOptionRepository.RemoveRange(pollOptionsIdsToDelete.Select(id => new PollOption { Id = id }));
       _pollOptionRepository.UpdateRange(pollOptionsToUpdate);
       _pollOptionRepository.CreateRange(pollOptionsToAdd);
+
+      transaction.Commit();
     }
   }
 }

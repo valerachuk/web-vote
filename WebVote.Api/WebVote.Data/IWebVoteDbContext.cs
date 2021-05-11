@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using WebVote.Data.Entities;
 
 namespace WebVote.Data
@@ -14,5 +16,6 @@ namespace WebVote.Data
 
     int SaveChanges();
     void Migrate();
+    IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
   }
 }
