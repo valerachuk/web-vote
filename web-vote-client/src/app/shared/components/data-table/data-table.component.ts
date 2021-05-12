@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DataTableHeader, DataTableValue } from './data-table-types';
 
 @Component({
@@ -6,14 +6,10 @@ import { DataTableHeader, DataTableValue } from './data-table-types';
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
 })
-export class DataTableComponent implements OnInit {
-  constructor() {}
-
+export class DataTableComponent {
   @Input()
   public header: DataTableHeader | null = null;
 
   @Input()
   public value: DataTableValue | null = null;
-
-  public ngOnInit(): void {}
 }

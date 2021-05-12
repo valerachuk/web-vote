@@ -6,14 +6,12 @@ import { AnalyticsService } from './services/analytics.service';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { FileDownloaderService } from './services/file-downloader.service';
-import { DataTableComponent } from './components/data-table/data-table.component';
 import { PollAnalyticsTemplateComponent } from './components/poll-analytics-template/poll-analytics-template.component';
 import { VotesPerOptionComponent } from './components/votes-per-option/votes-per-option.component';
 import { VotesPerRegionComponent } from './components/votes-per-region/votes-per-region.component';
 
 @NgModule({
   declarations: [
-    DataTableComponent,
     PollAnalyticsTemplateComponent,
     VotesPerOptionComponent,
     VotesPerRegionComponent,

@@ -25,7 +25,7 @@ namespace WebVote.Api.Controllers
     [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
     public IActionResult RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
-      _authDomain.Register(registerUserRequest);
+      _authDomain.Register(registerUserRequest, User.GetId());
       return Ok();
     }
 
@@ -33,7 +33,7 @@ namespace WebVote.Api.Controllers
     [Authorize(Roles = AuthorizeRoles.ADMIN)]
     public IActionResult RegisterMultipleUsersCSV([FromForm] IFormFile file)
     {
-      _authDomain.RegisterMultiple(file);
+      _authDomain.RegisterMultiple(file, User.GetId());
       return Ok();
     }
 

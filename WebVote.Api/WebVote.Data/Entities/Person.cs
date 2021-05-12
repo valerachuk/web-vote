@@ -16,5 +16,7 @@ namespace WebVote.Data.Entities
 
     public PasswordCredentials PasswordCredentials { get; set; }
     public IList<VoterVote> Votes { get; set; }
+    public IList<RegistrationLogRecord> RegisteredUsers { get; set; }
+    public RegistrationLogRecord RegisteredByLogRecord { get; set; }
   }
 }

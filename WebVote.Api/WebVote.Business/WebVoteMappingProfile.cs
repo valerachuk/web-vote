@@ -70,6 +70,16 @@ namespace WebVote.Business
           opt => opt.MapFrom(tuple => tuple.Item2.First(region => region.Code == tuple.Item1.RegionCode).Id)
           );
 
+      CreateMap<RegistrationLogRecord, RegistrationLogRecordResponse>()
+        .ForMember(recordResponse => recordResponse.ByWhomName,
+          opt => opt.MapFrom(response => response.ByWhom.FullName))
+        .ForMember(recordResponse => recordResponse.ByWhomITN,
+          opt => opt.MapFrom(response => response.ByWhom.IndividualTaxNumber))
+        .ForMember(recordResponse => recordResponse.ToWhomName,
+          opt => opt.MapFrom(response => response.ToWhom.FullName))
+        .ForMember(recordResponse => recordResponse.ToWhomITN,
+          opt => opt.MapFrom(response => response.ToWhom.IndividualTaxNumber));
+
     }
   }
 }

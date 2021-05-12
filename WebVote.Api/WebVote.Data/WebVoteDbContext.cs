@@ -15,6 +15,7 @@ namespace WebVote.Data
     public DbSet<Poll> Polls { get; set; }
     public DbSet<PollOption> PollOptions { get; set; }
     public DbSet<VoterVote> VoterVotes { get; set; }
+    public DbSet<RegistrationLogRecord> RegistrationLog { get; set; }
 
     public void Migrate()
     {
@@ -34,6 +35,7 @@ namespace WebVote.Data
       ConfigurePollOptions(modelBuilder);
       ConfigureVoterVotes(modelBuilder);
       ConfigureRegions(modelBuilder);
+      ConfigureRegistrationLog(modelBuilder);
     }
 
     private static void ConfigurePasswordCredentials(ModelBuilder modelBuilder)
@@ -189,6 +191,28 @@ namespace WebVote.Data
       regionModelBuilder
         .HasIndex(region => region.Code)
         .IsUnique();
+    }
+
+    private static void ConfigureRegistrationLog(ModelBuilder modelBuilder)
+    {
+      var regionModelBuilder = modelBuilder.Entity<RegistrationLogRecord>();
+
+      regionModelBuilder
+        .HasKey(record => record.Id);
+
+      regionModelBuilder
+        .Property(record => record.TimeStamp)
+        .IsRequired();
+
+      regionModelBuilder
+        .HasOne(record => record.ByWhom)
+        .WithMany(person => person.RegisteredUsers)
+        .HasForeignKey(record => record.ByWhomId);
+
+      regionModelBuilder
+        .HasOne(record => record.ToWhom)
+        .WithOne(person => person.RegisteredByLogRecord)
+        .HasForeignKey<RegistrationLogRecord>(record => record.ToWhomId);
     }
   }
 }

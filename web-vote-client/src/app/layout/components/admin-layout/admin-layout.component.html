@@ -139,6 +139,17 @@
               >Profile</a
             >
           </li>
+
+          <li class="nav-item" [class.active]="activeLogLink.isActive">
+            <a
+              class="nav-link"
+              [routerLink]="['logging']"
+              (click)="isMenuCollapsed = true"
+              routerLinkActive
+              #activeLogLink="routerLinkActive"
+              >Log</a
+            >
+          </li>
         </ul>
         <button class="btn btn-outline-light" appLogoutButton>Logout</button>
       </div>

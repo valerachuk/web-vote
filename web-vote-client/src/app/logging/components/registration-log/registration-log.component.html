@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title text-center">Registration log</h2>
+    <app-data-table
+      *ngIf="registrationLog$ | async as registrationLog; else loading"
+      [header]="tableHeader"
+      [value]="registrationLog"
+    ></app-data-table>
+    <ng-template #loading>
+      <app-spinner></app-spinner>
+    </ng-template>
+  </div>
+</div>

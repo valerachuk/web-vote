@@ -27,23 +27,27 @@ namespace WebVote.Business.Domains
 {
   public class AuthDomain : IAuthDomain
   {
-    private readonly IPersonRepository _personRepository;
-    private readonly IPasswordCredentialsRepository _passwordCredentialsRepository;
-    private readonly IMapper _mapper;
     private readonly SHA256 _sha256 = SHA256.Create();
     private readonly RNGCryptoServiceProvider _secureRandom = new RNGCryptoServiceProvider();
-    private readonly IOptions<AuthOptions> _authOptions;
     private readonly RegisterMultipleUsersCSVRequestValidator _multipleUsersCSVRequestValidator;
+    private readonly IPersonRepository _personRepository;
+    private readonly IPasswordCredentialsRepository _passwordCredentialsRepository;
     private readonly IRegionRepository _regionRepository;
+    private readonly IRegistrationLogRepository _registrationLogRepository;
+    private readonly IMapper _mapper;
+    private readonly IOptions<AuthOptions> _authOptions;
     private readonly IWebVoteDbContext _webVoteDbContext;
+    private readonly IDateProviderDomain _dateProvider;
 
     public AuthDomain(
+      RegisterMultipleUsersCSVRequestValidator multipleUsersCSVRequestValidator,
       IPersonRepository personRepository,
       IPasswordCredentialsRepository passwordCredentialsRepository,
       IRegionRepository regionRepository,
+      IRegistrationLogRepository registrationLogRepository,
+      IDateProviderDomain dateProvider,
       IMapper mapper,
       IOptions<AuthOptions> authOptions,
-      RegisterMultipleUsersCSVRequestValidator multipleUsersCSVRequestValidator,
       IWebVoteDbContext webVoteDbContext
       )
     {
@@ -54,6 +58,8 @@ namespace WebVote.Business.Domains
       _authOptions = authOptions;
       _multipleUsersCSVRequestValidator = multipleUsersCSVRequestValidator;
       _webVoteDbContext = webVoteDbContext;
+      _registrationLogRepository = registrationLogRepository;
+      _dateProvider = dateProvider;
     }
 
     private byte[] CreateSalt()
@@ -82,7 +88,7 @@ namespace WebVote.Business.Domains
       passwordCredentials.PasswordHash = passwordHash;
     }
 
-    public void Register(RegisterUserRequest registerUserRequest)
+    public void Register(RegisterUserRequest registerUserRequest, int registrarId, bool writeLogInTransaction = true)
     {
       var personByItn = _personRepository.ReadPersonByITN(registerUserRequest.IndividualTaxNumber);
       var credentialsByLogin = _passwordCredentialsRepository.ReadPasswordCredentialsByLogin(registerUserRequest.Login);
@@ -107,13 +113,32 @@ namespace WebVote.Business.Domains
         throw new ConflictException(errorMessage);
       }
 
-      var newPersonWithCredentials = _mapper.Map<Person>(registerUserRequest);
-      CompleteCredentials(newPersonWithCredentials.PasswordCredentials, registerUserRequest.Password);
+      void AddToDatabase()
+      {
+        var newPersonWithCredentials = _mapper.Map<Person>(registerUserRequest);
+        CompleteCredentials(newPersonWithCredentials.PasswordCredentials, registerUserRequest.Password);
 
-      _personRepository.Create(newPersonWithCredentials);
+        var addedPerson = _personRepository.Create(newPersonWithCredentials);
+        _registrationLogRepository.Create(new RegistrationLogRecord
+        {
+          ByWhomId = registrarId,
+          ToWhom = addedPerson,
+          TimeStamp = _dateProvider.UtcNow
+        });
+      }
+
+      if (writeLogInTransaction)
+      {
+        using var transaction = _webVoteDbContext.BeginTransaction(IsolationLevel.ReadUncommitted);
+        AddToDatabase();
+        transaction.Commit();
+        return;
+      }
+
+      AddToDatabase();
     }
 
-    public void RegisterMultiple(IFormFile file)
+    public void RegisterMultiple(IFormFile file, int registrarId)
     {
       static bool UserHasAtLeastOneField(RegisterMultipleUsersCSVRequest user)
       {
@@ -203,7 +228,7 @@ namespace WebVote.Business.Domains
 
         try
         {
-          Register(registerUserRequest);
+          Register(registerUserRequest, registrarId, false);
         }
         catch (ConflictException e)
         {

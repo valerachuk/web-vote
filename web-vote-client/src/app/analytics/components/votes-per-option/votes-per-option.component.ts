@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AnalyticsService } from '../../services/analytics.service';
-import { DataTableHeader } from '../data-table/data-table-types';
+import { DataTableHeader } from 'src/app/shared/components/data-table/data-table-types';
 
 @Component({
   selector: 'app-votes-per-option',

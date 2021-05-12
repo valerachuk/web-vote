@@ -122,6 +122,11 @@ const routes: Routes = [
             (m) => m.AnalyticsModule
           ),
       },
+      {
+        path: 'logging',
+        loadChildren: () =>
+          import('../logging/logging.module').then((m) => m.LoggingModule),
+      },
     ],
   },
   {

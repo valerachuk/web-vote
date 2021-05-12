@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { PollService } from 'src/app/core/services/poll.service';
 import { PollTitle } from 'src/app/interfaces/poll-title.interface';
-import { DataTableHeader } from '../data-table/data-table-types';
+import { DataTableHeader } from 'src/app/shared/components/data-table/data-table-types';
 
 @Component({
   selector: 'app-poll-analytics-template',

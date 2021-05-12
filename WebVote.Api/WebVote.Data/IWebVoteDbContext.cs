@@ -13,6 +13,7 @@ namespace WebVote.Data
     DbSet<Poll> Polls { get; set; }
     DbSet<PollOption> PollOptions { get; set; }
     DbSet<VoterVote> VoterVotes { get; set; }
+    DbSet<RegistrationLogRecord> RegistrationLog { get; set; }
 
     int SaveChanges();
     void Migrate();
