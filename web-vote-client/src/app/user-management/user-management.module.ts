@@ -10,9 +10,10 @@ import { RegionService } from './services/region.service';
 import { UserManagementService } from './services/user-management.service';
 import { ViewProfileChangePasswordComponent } from './components/view-profile-change-password/view-profile-change-password.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { RegisterCsvComponent } from './components/register-csv/register-csv.component';
 
 @NgModule({
-  declarations: [RegisterComponent, ViewProfileChangePasswordComponent, ChangePasswordComponent],
+  declarations: [RegisterComponent, ViewProfileChangePasswordComponent, ChangePasswordComponent, RegisterCsvComponent],
   providers: [RegionService, UserManagementService],
   imports: [
     CommonModule,

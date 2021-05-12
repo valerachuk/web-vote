@@ -181,6 +181,14 @@ namespace WebVote.Data
       regionModelBuilder
         .Property(region => region.Name)
         .IsRequired();
+
+      regionModelBuilder
+        .Property(region => region.Code)
+        .IsRequired();
+
+      regionModelBuilder
+        .HasIndex(region => region.Code)
+        .IsUnique();
     }
   }
 }

@@ -6,6 +6,7 @@ namespace WebVote.Data.Entities
   {
     public int Id { get; set; }
     public string Name { get; set; }
+    public string Code { get; set; }
 
     public IList<Person> Citizens { get; set; }
     public IList<VoterVote> Votes { get; set; }

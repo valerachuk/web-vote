@@ -26,6 +26,20 @@ export class UserManagementService {
     );
   }
 
+  public registerVotersCsv(file: File): Observable<void> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<void>(
+      `${environment.baseApiUrl}auth/register-csv`,
+      formData,
+      {
+        headers: {
+          ngiSkip: '400',
+        },
+      }
+    );
+  }
+
   public changePassword(form: ChangePasswordForm): Observable<void> {
     return this.http.put<void>(`${environment.baseApiUrl}auth`, form, {
       headers: {

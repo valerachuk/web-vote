@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebVote.Api.Extensions;
 using WebVote.Business.Domains.Interfaces;
@@ -25,6 +26,14 @@ namespace WebVote.Api.Controllers
     public IActionResult RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
       _authDomain.Register(registerUserRequest);
+      return Ok();
+    }
+
+    [HttpPost("register-csv")]
+    [Authorize(Roles = AuthorizeRoles.ADMIN)]
+    public IActionResult RegisterMultipleUsersCSV([FromForm] IFormFile file)
+    {
+      _authDomain.RegisterMultiple(file);
       return Ok();
     }
 

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AUTHORIZE_ROLES } from '../constants/authorize-roles.constant';
 import { AuthGuardService } from '../core/services/auth-guard.service';
+import { RegisterCsvComponent } from './components/register-csv/register-csv.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ViewProfileChangePasswordComponent } from './components/view-profile-change-password/view-profile-change-password.component';
 
@@ -16,6 +17,14 @@ const routes: Routes = [
     component: RegisterComponent,
     data: {
       allowedRoles: AUTHORIZE_ROLES.managerAdmin,
+    },
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'register-csv',
+    component: RegisterCsvComponent,
+    data: {
+      allowedRoles: AUTHORIZE_ROLES.admin,
     },
     canActivate: [AuthGuardService],
   },

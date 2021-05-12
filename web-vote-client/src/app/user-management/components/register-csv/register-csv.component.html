@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title text-center">Register multiple via CSV</h2>
+    <hr />
+    <div class="form-group">
+      <div class="custom-file">
+        <input
+          [disabled]="isFileUploading"
+          #fileInput
+          accept=".csv"
+          type="file"
+          class="custom-file-input is-invalid"
+          [class.is-invalid]="
+            fileNotChosenError || fileTooLargeError || serverSideError
+          "
+          id="multipleUsersFileInput"
+          (change)="onFileChosen()"
+        />
+        <label class="custom-file-label" for="multipleUsersFileInput">{{
+          fileNamePlaceholder
+        }}</label>
+        <div class="invalid-feedback" *ngIf="fileNotChosenError">
+          File should be selected
+        </div>
+        <div class="invalid-feedback" *ngIf="fileTooLargeError">
+          File size should not be greater than
+          {{ csvUsersMaxFileSize / (1000 * 1000) }} MB
+        </div>
+        <div
+          class="invalid-feedback server-side-errors"
+          *ngIf="serverSideError"
+        >
+          {{ serverSideError }}
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="btn btn-primary"
+      [disabled]="isFileUploading"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+
+    <app-spinner *ngIf="isFileUploading"></app-spinner>
+  </div>
+</div>

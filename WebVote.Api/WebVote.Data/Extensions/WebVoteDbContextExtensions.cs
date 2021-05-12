@@ -276,99 +276,123 @@ namespace WebVote.Data.Extensions
       {
         new Region
         {
-          Name = "Cherkasy Oblast"
+          Name = "Cherkasy Oblast",
+          Code = "23"
         },
         new Region
         {
-          Name = "Chernihiv Oblast"
+          Name = "Chernihiv Oblast",
+          Code = "25"
         },
         new Region
         {
-          Name = "Chernivtsi Oblast"
+          Name = "Chernivtsi Oblast",
+          Code = "24"
         },
         new Region
         {
-          Name = "Dnipropetrovsk Oblast"
+          Name = "Dnipropetrovsk Oblast",
+          Code = "04"
         },
         new Region
         {
-          Name = "Donetsk Oblast"
+          Name = "Donetsk Oblast",
+          Code = "05"
         },
         new Region
         {
-          Name = "Ivano-Frankivsk Oblast"
+          Name = "Ivano-Frankivsk Oblast",
+          Code = "09"
         },
         new Region
         {
-          Name = "Kharkiv Oblast"
+          Name = "Kharkiv Oblast",
+          Code = "20"
         },
         new Region
         {
-          Name = "Kherson Oblast"
+          Name = "Kherson Oblast",
+          Code = "21"
         },
         new Region
         {
-          Name = "Khmelnytskyi Oblast"
+          Name = "Khmelnytskyi Oblast",
+          Code = "22"
         },
         new Region
         {
-          Name = "Kyiv Oblast"
+          Name = "Kyiv Oblast",
+          Code = "10"
         },
         new Region
         {
-          Name = "Kirovohrad Oblast"
+          Name = "Kirovohrad Oblast",
+          Code = "11"
         },
         new Region
         {
-          Name = "Luhansk Oblast"
+          Name = "Luhansk Oblast",
+          Code = "12"
         },
         new Region
         {
-          Name = "Lviv Oblast"
+          Name = "Lviv Oblast",
+          Code = "13"
         },
         new Region
         {
-          Name = "Mykolaiv Oblast"
+          Name = "Mykolaiv Oblast",
+          Code = "14"
         },
         new Region
         {
-          Name = "Odessa Oblast"
+          Name = "Odessa Oblast",
+          Code = "15"
         },
         new Region
         {
-          Name = "Poltava Oblast"
+          Name = "Poltava Oblast",
+          Code = "16"
         },
         new Region
         {
-          Name = "Rivne Oblast"
+          Name = "Rivne Oblast",
+          Code = "17"
         },
         new Region
         {
-          Name = "Sumy Oblast"
+          Name = "Sumy Oblast",
+          Code = "18"
         },
         new Region
         {
-          Name = "Ternopil Oblast"
+          Name = "Ternopil Oblast",
+          Code = "19"
         },
         new Region
         {
-          Name = "Vinnytsia Oblast"
+          Name = "Vinnytsia Oblast",
+          Code = "02"
         },
         new Region
         {
-          Name = "Volyn Oblast"
+          Name = "Volyn Oblast",
+          Code = "03"
         },
         new Region
         {
-          Name = "Zakarpattia Oblast"
+          Name = "Zakarpattia Oblast",
+          Code = "07"
         },
         new Region
         {
-          Name = "Zaporizhzhia Oblast"
+          Name = "Zaporizhzhia Oblast",
+          Code = "08"
         },
         new Region
         {
-          Name = "Zhytomyr Oblast"
+          Name = "Zhytomyr Oblast",
+          Code = "06"
         }
       };
     }

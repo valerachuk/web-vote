@@ -13,16 +13,37 @@
 
       <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item" [class.active]="activeRegisterLink.isActive">
+          <li ngbDropdown class="nav-item">
             <a
+              ngbDropdownToggle
               class="nav-link"
-              [routerLink]="['user-management', 'register']"
-              (click)="isMenuCollapsed = true"
-              routerLinkActive
-              #activeRegisterLink="routerLinkActive"
-              >Register voter</a
+              [class.active]="
+                activeRegisterLink.isActive || activeRegisterCsvLink.isActive
+              "
+              >Register</a
             >
+            <div ngbDropdownMenu>
+              <button
+                ngbDropdownItem
+                [routerLink]="['user-management', 'register']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeRegisterLink="routerLinkActive"
+              >
+                Register voter
+              </button>
+              <button
+                ngbDropdownItem
+                [routerLink]="['user-management', 'register-csv']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeRegisterCsvLink="routerLinkActive"
+              >
+                Register multiple via CSV
+              </button>
+            </div>
           </li>
+
           <li class="nav-item" [class.active]="activeCreatePoolLink.isActive">
             <a
               class="nav-link"

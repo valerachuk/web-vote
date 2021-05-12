@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using WebVote.Business.RESTRequests;
 using WebVote.Business.RESTRequests.Poll;
 using WebVote.Business.RESTResponses;
@@ -59,6 +61,14 @@ namespace WebVote.Business
 
           return response;
         });
+
+      CreateMap<RegisterMultipleUsersCSVRequest, RegisterUserRequest>();
+      CreateMap<(RegisterMultipleUsersCSVRequest, IEnumerable<Region>), RegisterUserRequest>()
+        .ConstructUsing((tuple, ctx) => ctx.Mapper.Map<RegisterUserRequest>(tuple.Item1))
+        .ForMember(
+          user => user.RegionId,
+          opt => opt.MapFrom(tuple => tuple.Item2.First(region => region.Code == tuple.Item1.RegionCode).Id)
+          );
 
     }
   }

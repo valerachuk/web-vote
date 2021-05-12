@@ -1,0 +1,7 @@
+:host #multipleUsersFileInput:not(:disabled) {
+  cursor: pointer;
+}
+
+:host .server-side-errors {
+  white-space: pre-line;
+}
