@@ -50,6 +50,38 @@
             >
           </li>
 
+          <li ngbDropdown class="nav-item">
+            <a
+              ngbDropdownToggle
+              class="nav-link"
+              [class.active]="
+                activeVotesPerOptionLink.isActive ||
+                activeVotesPerRegionLink.isActive
+              "
+              >Analytics</a
+            >
+            <div ngbDropdownMenu>
+              <button
+                ngbDropdownItem
+                [routerLink]="['analytics', 'votes-per-option']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeVotesPerOptionLink="routerLinkActive"
+              >
+                Votes per option
+              </button>
+              <button
+                ngbDropdownItem
+                [routerLink]="['analytics', 'votes-per-region']"
+                (click)="isMenuCollapsed = true"
+                routerLinkActive="active"
+                #activeVotesPerRegionLink="routerLinkActive"
+              >
+                Votes per region
+              </button>
+            </div>
+          </li>
+
           <li class="nav-item" [class.active]="activeUserProfileLink.isActive">
             <a
               class="nav-link"

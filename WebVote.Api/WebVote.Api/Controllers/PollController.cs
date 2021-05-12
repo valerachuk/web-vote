@@ -64,7 +64,7 @@ namespace WebVote.Api.Controllers
     }
 
     [HttpGet("polls-titles")]
-    [Authorize(Roles = AuthorizeRoles.ADMIN)]
+    [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
     public IActionResult GetPollsTitles()
     {
       return Ok(_pollDomain.GetPollsTitles());

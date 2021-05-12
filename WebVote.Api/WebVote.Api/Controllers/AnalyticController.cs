@@ -7,7 +7,7 @@ namespace WebVote.Api.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  [Authorize(Roles = AuthorizeRoles.ADMIN)]
+  [Authorize(Roles = AuthorizeRoles.MANAGER_ADMIN)]
   public class AnalyticController : ControllerBase
   {
     private readonly IAnalyticDomain _analyticDomain;
