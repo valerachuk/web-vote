@@ -35,14 +35,14 @@ namespace WebVote.Data.Extensions
       for (var i = 0; i < usersCount / batchSize; i++)
       {
         var timer = Stopwatch.StartNew();
-        var people = GetSimpleDummyPeople(i, batchSize);
-        var votes = GetDummyVotes(people, polls);
+        var people = GetSimpleDummyPeople(i, batchSize, regions);
+        var votes = GetDummyVotes(people, new[] { polls[0], polls[1] });
 
         webVoteDbContext.People.AddRange(people);
         webVoteDbContext.VoterVotes.AddRange(votes);
 
         webVoteDbContext.SaveChanges();
-        Console.WriteLine($"Writing batch {i} of {usersCount / batchSize}, batchSize: {batchSize}, time: {timer.ElapsedMilliseconds} ms");
+        Console.WriteLine($"Writing batch {i + 1} of {usersCount / batchSize}, batchSize: {batchSize}, time: {timer.ElapsedMilliseconds} ms");
       }
 
     }
@@ -135,14 +135,15 @@ namespace WebVote.Data.Extensions
       }).ToList();
     }
 
-    private static IList<Person> GetSimpleDummyPeople(int batchId, int batchSize)
+    private static IList<Person> GetSimpleDummyPeople(int batchId, int batchSize, IList<Region> regions)
     {
       return Enumerable.Range(0, batchSize).Select(i => new Person
       {
         IndividualTaxNumber = $"TaxNumber_{batchId}_{i}",
         FullName = "FullName",
         Role = UserRoles.VOTER,
-        Birth = new DateTime(1990, 10, 11)
+        Birth = new DateTime(1990, 10, 11),
+        Region = regions[Rnd.Next(0, regions.Count)]
       }).ToList();
     }
 
