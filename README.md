@@ -37,7 +37,7 @@ Self-hosted on my 10 y.o. PC using docker.
 
 [<img src="./img/videoPreview.png" width="550px" alt="Watch the video"/>](https://youtu.be/tJyB34bGs4s)
 
-Check it now on webvote.tk
+Check it now on [webvote.tk](http://webvote.tk/)
 
 Voters:
 
