@@ -5,8 +5,6 @@ The app has three levels of privileges. Managers register users, admin creates a
 Most of the user interface is responsive and looks good on mobile devices.
 It was developed using [ASP.NET Core](https://github.com/dotnet/aspnetcore) and [Angular](https://angular.io/).
 
-Self-hosted on my 10 y.o. PC using docker.
-
 ## Table of contents
 
 - [About](#webvote)
@@ -37,15 +35,9 @@ Self-hosted on my 10 y.o. PC using docker.
 
 [<img src="./img/videoPreview.png" width="550px" alt="Watch the video"/>](https://youtu.be/tJyB34bGs4s)
 
-Check it now on [webvote.tk](http://webvote.tk/)
+Check it now on [webvote.tk](http://webvote.tk/) (Self-hosted on my 10 y.o. PC using docker).
 
-Voters:
-
-```
-for i in range(1, 200):
-  login = i;
-  password = i;
-```
+There are 200 demo voters. Login and password - numbers from 1 to 200.
 
 ## Users' privileges
 
@@ -55,7 +47,7 @@ Users with a higher level of privileges have access to all services, as do users
 | Ability to                                                                | admin | manager | voter |
 | ------------------------------------------------------------------------- | :---: | :-----: | :---: |
 | [View active polls list](#active-polls-list)                              |   +   |    +    |   +   |
-| [View archived polls list](##archived-pools-list)                         |   +   |    +    |   +   |
+| [View archived polls list](#archived-pools-list)                         |   +   |    +    |   +   |
 | [Vote on active polls](#vote-view-poll-form)                              |   +   |    +    |   +   |
 | [View archived polls](#vote-view-poll-form)                               |   +   |    +    |   +   |
 | [Change password](#profile)                                               |   +   |    +    |   +   |
